@@ -1,0 +1,94 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family:'poppins', Arial, Helvetica, sans-serif;
+}
+
+.dashboard {
+    margin-top: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+}
+
+
+.project-container {
+
+    width: 40%;
+
+    display: inline-block;
+    float: left;
+    margin-left: 120px;
+    margin-top: 100px;
+    border-radius: 20px;
+    background-color: rgba(201, 210, 216, 0.7);
+    padding: 15px 15px 20px;
+
+    -webkit-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
+}
+
+.task-container {
+
+    width: 40%;
+    display: inline-block;
+    float: right;
+    margin-right: 120px;
+    margin-top: 100px;
+    border-radius: 20px;
+    background-color: rgba(201, 210, 216, 0.7);
+    padding: 15px 15px 20px;
+
+    -webkit-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
+}
+.task-container h3,.project-container h3 {
+    padding-bottom: 25px;
+    font-size: 40px;
+    color: black;
+
+}
+.task-container img,.project-container img {
+    max-height: 200px;
+}
+.task-container img {
+    padding-left: 28px;
+}
+.task-container a,.project-container a {
+    text-decoration: none;
+
+}
+.task-container p,.project-container p {
+    padding-left: 25px;
+    padding-right: 25px;
+    font-size: 18px;
+
+}
+.task-container, .project-container {
+    height: 450px;
+}
+.background{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url("img/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+    filter: blur(4px);
+
+}
+html {
+    height: 100%;
+}
+body{
+    margin:0;
+    padding:0;
+    font-family: sans-serif;
+    background: linear-gradient(#30142b, #2772a1);
+}
