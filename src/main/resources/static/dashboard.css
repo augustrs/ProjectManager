@@ -11,6 +11,9 @@
     text-align: center;
     font-size: 40px;
 }
+.dashboard h1 {
+    color: white;
+}
 
 
 .project-container {
@@ -28,6 +31,7 @@
     -webkit-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
+
 }
 
 .task-container {
@@ -75,7 +79,7 @@
     top:0;
     left: 0;
     width: 100%;
-    min-height: 100vh;
+    height: 100%;
     background-image: url("img/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -91,4 +95,105 @@ body{
     padding:0;
     font-family: sans-serif;
     background: linear-gradient(#30142b, #2772a1);
+
+}
+
+
+
+
+
+footer {
+
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}
+
+
+footer{
+    color: white;
+    padding-top: 25px;
+    min-height: 70px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.5s ease;
+    padding-left: 25px;
+}
+
+
+footer li {
+    margin-top: 17px;
+    float:left;
+    display: inline;
+    padding: 0 0 0 20px;
+}
+footer p {
+    margin-top: 17px;
+    float:right;
+    display: inline;
+    padding: 0 50px 0 30px;
+    font-size: 16px;
+}
+
+footer a:hover {
+    transition: 0.5s ease;
+    color: #cccc;
+}
+/* Header styling */
+
+header li, a, button {
+    font-weight: 500;
+    font-size: 16px;
+    color: #ECF0F1;
+    text-decoration: none;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10%;
+}
+
+.logo {
+    cursor: pointer;
+    margin-left: -100px;
+}
+
+.nav_links {
+    list-style: none;
+    margin-left: -80px;
+}
+
+.nav_links li {
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.nav_links li a {
+    transition: all 0.3s ease 0s;
+}
+
+.nav_links li a:hover {
+    color: #0088A9;
+    transition: all 0.3s ease 0s;
+}
+
+.sign_out_button {
+    padding: 9px 25px;
+    background-color: rgba(0,136,169,1);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    margin-right: -80px;
+}
+
+.sign_out_button:hover {
+    background-color: rgba(0,136,169,0.8);
 }
