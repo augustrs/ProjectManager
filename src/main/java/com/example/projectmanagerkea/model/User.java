@@ -1,50 +1,61 @@
 package com.example.projectmanagerkea.model;
 
 public class User {
-    private int id;
-    private String username;
+    private int userId;
+    private String realName;
+    private String userName;
     private String password;
-    private String role;
+    private int roleId;
 
-    public int getId() {
-        return id;
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String userName) {
+        this.userName = userName;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+    public int getUserId() {
+        return userId;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public User(int userId, String realName, String userName, String password, int roleId) {
+        this.userId = userId;
+        this.realName = realName;
+        this.userName = userName;
+        this.password = password;
+        this.roleId = roleId;
+    }
+    public User() {
+
     }
 }
