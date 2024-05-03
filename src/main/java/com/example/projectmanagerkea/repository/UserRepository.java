@@ -23,17 +23,18 @@ public class UserRepository {
 
     public User findUser(String username) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "SELECT * FROM USERS WHERE USERNAME = ?";
+        String SQL = "SELECT * FROM USER WHERE username = ?";
         PreparedStatement ps = connection.prepareStatement(SQL);
         ps.setString(1, username);
         ResultSet rs = ps.executeQuery();
         User user = null;
         if (rs.next()) {
             user = new User();
-            user.setUsername(rs.getString("USERNAME"));
-            user.setPassword(rs.getString("PASSWORD"));
-            user.setId(rs.getInt("USER_ID"));
-            user.setRole(rs.getString("ROLE"));
+            user.setUserId(rs.getInt("user_id"));
+            user.setRealName(rs.getString("real_name"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setRoleId(rs.getInt("role_id"));
         }
         return user;
     }

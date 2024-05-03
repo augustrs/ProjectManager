@@ -44,11 +44,11 @@ public class ProjectController {
     public String loginSubmit(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         try {
             User user = userService.verifyLogIn(username,password);
-            if (user!=null && user.getRole().equals("ADMIN")) {
+            if (user!=null && user.getRoleId() == 1) {
                 session.setAttribute("loggedInUser", user);
 
                 return "redirect:/admin";
-            } else if (user!=null && user.getRole().equals("USER")){
+            } else if (user!=null && user.getRoleId() == 3){
                 session.setAttribute("loggedInUser", user);
 
                 return "redirect:/dashboard";
@@ -63,9 +63,9 @@ public class ProjectController {
     @GetMapping("/admin")
     public String admin(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null && loggedInUser.getRole().equals("ADMIN")) {
+        if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
             return "admin";
-        } else if ((loggedInUser != null && loggedInUser.getRole().equals("USER"))) {
+        } else if ((loggedInUser != null && loggedInUser.getRoleId() == 3)) {
             return "redirect:/dashboard";
         } else {
             return "redirect:/login";
