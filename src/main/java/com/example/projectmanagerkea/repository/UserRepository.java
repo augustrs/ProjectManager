@@ -47,4 +47,15 @@ public class UserRepository {
             return null;
         }
     }
+
+    public void createUser(User newUser) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url,db_username,db_password);
+        String SQL ="INSERT INTO USER(real_name, username, password, role_id) VALUES (?, ?, ?, ?)";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setString(1, newUser.getRealName());
+        ps.setString(2, newUser.getUsername());
+        ps.setString(3, newUser.getPassword());
+        ps.setInt(4,newUser.getRoleId());
+        ps.executeUpdate();
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -81,4 +82,29 @@ public class ProjectController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/createUserForm")
+    public String showCreateUserForm(HttpSession session,Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            model.addAttribute("user", new User());
+            return "createUser";
+        }
+        return "dashboard";
+    }
+    @PostMapping("/createUser")
+    public String createUser(HttpSession session,@ModelAttribute("user") User newUser) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            userService.createUser(newUser);
+            return "redirect:/admin";
+        }
+        return "dashboard";
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login"; // Redirect to the login page
+    }
+
 }

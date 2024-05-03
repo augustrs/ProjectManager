@@ -20,4 +20,8 @@ public class UserService {
     public User verifyLogIn(String username, String password) throws SQLException {
         return userRepository.verifyUser(username,password);
     }
+
+    public void createUser(User newUser) throws SQLException {
+        userRepository.createUser(newUser);
+    }
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create user form</title>
+</head>
+<body>
+<form th:action="@{/createUser}" th:object="${user}" method="post">
+    <label for = "realName">Real name:</label>
+    <input type="text" id="realName" th:field="*{realName}" required>
+
+    <label for = "username">Username:</label>
+    <input type ="text" id="username" th:field="*{username}" required>
+
+    <label for = "password">Password:</label>
+    <input type ="password" id="password" th:field="*{password}">
+
+    <label for="roleId">Role:</label>
+    <select id ="roleId" th:field="*{roleId}" required>
+        <option value ="1">Admin</option>
+        <option value ="2">Manager</option>
+        <option value ="3">Member</option>
+
+    </select>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

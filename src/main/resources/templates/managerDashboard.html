@@ -3,7 +3,7 @@
 <head>
 
     <title>Manager Dashboard</title>
-    <link href="../static/managerdashboard.css" rel="stylesheet">
+    <link th:href="@{/managerdashboard.css}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
 <div class="background"></div>
 <div class="header_div">
     <header>
-        <img class="logo" src="../static/img/project-manager-logo.png" alt="logo">
+        <img class="logo" th:src="@{/static/img/project-manager-logo.png}" alt="logo">
 
         <nav>
             <ul class="nav_links">
@@ -26,7 +26,7 @@
             </ul>
         </nav>
 
-        <a class="cta" href="#"><button class="sign_out_button">Sign out</button></a>
+        <a class="cta" href="/logout"><button class="sign_out_button">Sign out</button></a>
 
     </header>
 </div>

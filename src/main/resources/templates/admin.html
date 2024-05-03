@@ -17,7 +17,7 @@
 <div class="background"></div>
 <div class="header_div">
     <header>
-        <img class="logo" src="../static/img/project-manager-logo.png" alt="logo">
+        <img class="logo" th:src="@{/static/img/project-manager-logo.png}" alt="logo">
 
         <nav>
             <ul class="nav_links">
@@ -27,14 +27,15 @@
             </ul>
         </nav>
 
-        <a class="cta" href="#"><button class="sign_out_button">Sign out</button></a>
+        <a class="cta" href="/logout"><button class="sign_out_button">Sign out</button></a>
 
     </header>
 </div>
 <div class="admin-dashboard">
     <h1>Admin dashboard</h1>
+    <a href="/createUserForm">Create user (TODO: SKAL SÆTTES IND I SHOW ALL USERS SIDEN)</a>
     <div class="user-container">
-        <a href="#"><h3>Show all users</h3></a>
+        <a href="show"><h3>Show all users</h3></a>
         <p>Click here to access 'Show All Users.' Easily edit, delete, and add new users, ensuring your team's roster remains up-to-date and secure.</p>
         <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"></a>
 

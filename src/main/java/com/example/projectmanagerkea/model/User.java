@@ -3,7 +3,7 @@ package com.example.projectmanagerkea.model;
 public class User {
     private int userId;
     private String realName;
-    private String userName;
+    private String username;
     private String password;
     private int roleId;
 
@@ -17,7 +17,7 @@ public class User {
     }
 
     public void setUsername(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public void setPassword(String password) {
@@ -36,8 +36,8 @@ public class User {
         return realName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -48,10 +48,10 @@ public class User {
         return roleId;
     }
 
-    public User(int userId, String realName, String userName, String password, int roleId) {
+    public User(int userId, String realName, String username, String password, int roleId) {
         this.userId = userId;
         this.realName = realName;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.roleId = roleId;
     }
