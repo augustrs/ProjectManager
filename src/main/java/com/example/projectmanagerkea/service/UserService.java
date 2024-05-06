@@ -24,4 +24,8 @@ public class UserService {
     public void createUser(User newUser) throws SQLException {
         userRepository.createUser(newUser);
     }
+
+    public int findManagerId(int userId) throws SQLException {
+        return userRepository.findManagerId(userId);
+    }
 }

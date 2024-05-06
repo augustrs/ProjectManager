@@ -2,6 +2,7 @@ package com.example.projectmanagerkea.controller;
 
 
 
+import com.example.projectmanagerkea.model.Project;
 import com.example.projectmanagerkea.model.User;
 import com.example.projectmanagerkea.service.ProjectService;
 
@@ -53,6 +54,10 @@ public class ProjectController {
                 session.setAttribute("loggedInUser", user);
 
                 return "redirect:/dashboard";
+            } else if (user!=null && user.getRoleId() == 2){
+                session.setAttribute("loggedInUser", user);
+
+                return "redirect:/managerDashboard";
             } else {
                 model.addAttribute("error", "invalid credentials");
                 return "index";
@@ -73,6 +78,16 @@ public class ProjectController {
         }
     }
 
+    @GetMapping("/managerDashboard")
+    public String managerDashboard(HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+            return "managerDashboard";
+        } else {
+            return "redirect:/dashboard";
+        }
+    }
+
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -90,8 +105,9 @@ public class ProjectController {
             model.addAttribute("user", new User());
             return "createUser";
         }
-        return "dashboard";
+        return "redirect:/dashboard";
     }
+
     @PostMapping("/createUser")
     public String createUser(HttpSession session,@ModelAttribute("user") User newUser) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -99,8 +115,30 @@ public class ProjectController {
             userService.createUser(newUser);
             return "redirect:/admin";
         }
-        return "dashboard";
+        return "redirect:/dashboard";
     }
+
+    @GetMapping("/createProjectForm")
+    public String showCreateProjectForm(HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+            model.addAttribute("project", new Project());
+            return "createProject";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/createProject")
+    public String createProject(HttpSession session,@ModelAttribute("project") Project newProject) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+            int managerId = userService.findManagerId(loggedInUser.getUserId());
+            projectService.createProject(newProject, managerId);
+            return "redirect:/managerDashboard";
+        }
+        return "redirect:/dashboard";
+    }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
