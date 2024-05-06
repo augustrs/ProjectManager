@@ -5,10 +5,7 @@ import com.example.projectmanagerkea.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 @Repository
@@ -49,15 +46,27 @@ public class UserRepository {
     }
 
     public void createUser(User newUser) throws SQLException {
-        Connection connection = ConnectionManager.getConnection(db_url,db_username,db_password);
-        String SQL ="INSERT INTO USER(real_name, username, password, role_id) VALUES (?, ?, ?, ?)";
-        PreparedStatement ps = connection.prepareStatement(SQL);
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "INSERT INTO USER(real_name, username, password, role_id) VALUES (?, ?, ?, ?)";
+        PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, newUser.getRealName());
         ps.setString(2, newUser.getUsername());
         ps.setString(3, newUser.getPassword());
-        ps.setInt(4,newUser.getRoleId());
+        ps.setInt(4, newUser.getRoleId());
         ps.executeUpdate();
+
+        ResultSet generatedKeys = ps.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            int userId = generatedKeys.getInt(1); // Assuming user_id is the first auto-generated key
+            if (newUser.getRoleId() == 2) {
+                String managerSQL = "INSERT INTO MANAGER(user_id) VALUES (?)";
+                PreparedStatement managerPS = connection.prepareStatement(managerSQL);
+                managerPS.setInt(1, userId);
+                managerPS.executeUpdate();
+            }
+        }
     }
+
 
     public int findManagerId(int userId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
