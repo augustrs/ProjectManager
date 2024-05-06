@@ -7,7 +7,6 @@ public class User {
     private String password;
     private int roleId;
 
-
     public void setUserId(int userId) {
         this.userId = userId;
     }

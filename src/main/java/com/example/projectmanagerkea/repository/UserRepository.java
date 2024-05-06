@@ -58,4 +58,18 @@ public class UserRepository {
         ps.setInt(4,newUser.getRoleId());
         ps.executeUpdate();
     }
+
+    public int findManagerId(int userId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT M.manager_id FROM USER U JOIN MANAGER M ON U.user_id = M.user_id WHERE U.user_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+
+        ps.setInt(1, userId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("manager_id");
+        }
+
+        return 0;
+    }
 }
