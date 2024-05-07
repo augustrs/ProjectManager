@@ -1,7 +1,7 @@
 package com.example.projectmanagerkea.service;
 
-
 import com.example.projectmanagerkea.model.Project;
+import com.example.projectmanagerkea.model.Task;
 import com.example.projectmanagerkea.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 @Service
 public class ProjectService {
+
     private ProjectRepository projectRepository;
 
     public ProjectService(ProjectRepository projectRepository) {
@@ -19,5 +20,8 @@ public class ProjectService {
         projectRepository.createProject(newProject, managerId);
     }
 
+    public void createTask(Task task, int projectId) throws SQLException {
+        projectRepository.createTask(task, projectId);
+    }
 
 }

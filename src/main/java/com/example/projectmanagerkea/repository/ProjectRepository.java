@@ -1,7 +1,7 @@
 package com.example.projectmanagerkea.repository;
 
-
 import com.example.projectmanagerkea.model.Project;
+import com.example.projectmanagerkea.model.Task;
 import com.example.projectmanagerkea.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -28,5 +28,14 @@ public class ProjectRepository {
         ps.executeUpdate();
     }
 
+    public void createTask(Task newTask, int projectId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "INSERT INTO task(name, description, project_id) VALUES (?, ?, ?)";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setString(1, newTask.getTaskName());
+        ps.setString(2, newTask.getTaskDescription());
+        ps.setInt(3, projectId);
+        ps.executeUpdate();
+    }
 
 }
