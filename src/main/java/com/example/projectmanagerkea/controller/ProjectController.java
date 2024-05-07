@@ -1,17 +1,14 @@
 package com.example.projectmanagerkea.controller;
 
-
-
 import com.example.projectmanagerkea.model.Project;
+import com.example.projectmanagerkea.model.Task;
 import com.example.projectmanagerkea.model.User;
 import com.example.projectmanagerkea.service.ProjectService;
 
 import com.example.projectmanagerkea.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,17 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.sql.SQLException;
 import java.util.List;
 
-
 @Controller
 
 public class ProjectController {
 
     private ProjectService projectService;
     private UserService userService;
-    public ProjectController(ProjectService projectService, UserService userService ){
+
+    public ProjectController(ProjectService projectService, UserService userService) {
         this.projectService = projectService;
         this.userService = userService;
     }
+
     @GetMapping
     public String homeScreen() {
         return "redirect:/login";
@@ -41,7 +39,6 @@ public class ProjectController {
     public String login() {
         return "index";
     }
-
 
     @PostMapping("/login")
     public String loginSubmit(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
@@ -67,6 +64,7 @@ public class ProjectController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/admin")
     public String admin(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -120,7 +118,7 @@ public class ProjectController {
     }
 
     @GetMapping("/createProjectForm")
-    public String showCreateProjectForm(HttpSession session, Model model) {
+    public String showCreateProjectForm(HttpSession session,Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
             model.addAttribute("project", new Project());
@@ -136,6 +134,27 @@ public class ProjectController {
             int managerId = userService.findManagerId(loggedInUser.getUserId());
             projectService.createProject(newProject, managerId);
             return "redirect:/managerDashboard";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/createTaskForm")
+    public String showCreateTaskForm(HttpSession session,Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+            model.addAttribute("task", new Task());
+            return "createTask";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/createTask")
+    public String createTask(HttpSession session,@ModelAttribute("task") Task newTask) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+            int projectId = 0;
+            projectService.createTask(newTask, projectId);
+            return "redirect:/dashboard";
         }
         return "redirect:/dashboard";
     }

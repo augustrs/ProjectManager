@@ -10,7 +10,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Repository
 public class UserRepository {
 
@@ -22,12 +21,14 @@ public class UserRepository {
     private String db_password;
 
     public User findUser(String username) throws SQLException {
+
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT * FROM USER WHERE username = ?";
         PreparedStatement ps = connection.prepareStatement(SQL);
         ps.setString(1, username);
         ResultSet rs = ps.executeQuery();
         User user = null;
+
         if (rs.next()) {
             user = new User();
             user.setUserId(rs.getInt("user_id"));
@@ -72,16 +73,17 @@ public class UserRepository {
 
 
     public int findManagerId(int userId) throws SQLException {
+
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT M.manager_id FROM USER U JOIN MANAGER M ON U.user_id = M.user_id WHERE U.user_id = ?";
         PreparedStatement ps = connection.prepareStatement(SQL);
 
         ps.setInt(1, userId);
         ResultSet rs = ps.executeQuery();
+
         if (rs.next()) {
             return rs.getInt("manager_id");
         }
-
         return 0;
     }
 
