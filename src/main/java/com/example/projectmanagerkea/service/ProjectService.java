@@ -6,6 +6,7 @@ import com.example.projectmanagerkea.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class ProjectService {
@@ -17,6 +18,9 @@ public class ProjectService {
 
     public void createProject(Project newProject, int managerId) throws SQLException {
         projectRepository.createProject(newProject, managerId);
+    }
+    public List<Project> getAllProjects() throws SQLException {
+        return projectRepository.getAllProjects();
     }
 
 

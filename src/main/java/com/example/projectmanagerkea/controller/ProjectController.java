@@ -157,5 +157,15 @@ public class ProjectController {
         }
         return "redirect:/dashboard";
     }
+    @GetMapping("/allProjects")
+    public String allProjects(HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            List<Project> projects = projectService.getAllProjects();
+            model.addAttribute("projects", projects);
+            return "allProjects";
+        }
+        return "redirect:/dashboard";
+    }
 
 }
