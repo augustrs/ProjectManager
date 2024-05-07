@@ -4,9 +4,12 @@ import com.example.projectmanagerkea.model.Project;
 import com.example.projectmanagerkea.model.Task;
 import com.example.projectmanagerkea.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class ProjectRepository {
@@ -36,6 +39,21 @@ public class ProjectRepository {
         ps.setString(2, newTask.getTaskDescription());
         ps.setInt(3, projectId);
         ps.executeUpdate();
+    }
+
+    public List<Project> getAllProjects() throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM project";
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(SQL);
+        List<Project> projects = new ArrayList<>();
+        while (rs.next()) {
+            Project project = new Project();
+            project.setProjectName(rs.getString("name"));
+            project.setProjectDescription(rs.getString("description"));
+            projects.add(project);
+        }
+        return projects;
     }
 
 }

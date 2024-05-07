@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 
@@ -162,6 +163,28 @@ public class ProjectController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login"; // Redirect to the login page
+    }
+
+    @GetMapping("/managedProjects")
+    public String managedProjects(HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+            int managerId = userService.findManagerId(loggedInUser.getUserId());
+            List<Project> projects = userService.findProjectsByManagerId(managerId);
+            model.addAttribute("projects", projects);
+            return "managedProjects";
+        }
+        return "redirect:/dashboard";
+    }
+    @GetMapping("/allProjects")
+    public String allProjects(HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            List<Project> projects = projectService.getAllProjects();
+            model.addAttribute("projects", projects);
+            return "allProjects";
+        }
+        return "redirect:/dashboard";
     }
 
 }
