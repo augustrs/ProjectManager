@@ -2,24 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Managed subproject's tasks</title>
+    <title th:text="${task.taskName}"></title>
 </head>
 <body>
-<h1>Task List</h1>
+<h1 th:text="${task.taskName}"></h1>
 <table border="1">
     <thead>
     <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Assignees</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="task : ${tasks}">
+    <tr>
         <td th:text="${task.taskName}"></td>
         <td th:text="${task.taskDescription}"></td>
-        <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">View Task</a></td>
-
-
+        <td>
+            <ul>
+                <li th:each="assignee : ${assignees}" th:text="${assignee.realName}"></li>
+            </ul>
     </tr>
     </tbody>
 </table>

@@ -2,6 +2,7 @@ package com.example.projectmanagerkea.repository;
 
 import com.example.projectmanagerkea.model.Project;
 import com.example.projectmanagerkea.model.Task;
+import com.example.projectmanagerkea.model.User;
 import com.example.projectmanagerkea.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -93,4 +94,37 @@ public class ProjectRepository {
     }
 
 
+    public Task findTask(int taskId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM task WHERE task_id = ?";
+            PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setInt(1, taskId);
+            ResultSet rs = ps.executeQuery();
+            Task task = new Task();
+            if (rs.next()) {
+                task.setTaskName(rs.getString("task_name"));
+                task.setTaskDescription(rs.getString("task_description"));
+                task.setTaskId(rs.getInt("task_id"));
+            }
+            return task;
+
+    }
+    public List<User> getAssigneesForTask(int taskId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT u.real_name, u.user_id " +
+                "FROM EMPLOYEE_TASK et " +
+                "JOIN USER u ON et.user_id = u.user_id " +
+                "WHERE et.task_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, taskId);
+        ResultSet rs = ps.executeQuery();
+        List<User> assignees = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User();
+            user.setRealName(rs.getString("real_name"));
+            user.setUserId(rs.getInt("user_id"));
+            assignees.add(user);
+        }
+        return assignees;
+    }
 }

@@ -206,5 +206,18 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
         return "redirect:/dashboard";
     }
 
+    @GetMapping("/{taskId}/showTask")
+    public String showTask(@PathVariable int taskId, HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null ) {
+            List<User> assignees = projectService.getAssigneesForTask(taskId);
+            Task task = projectService.findTask(taskId);
+            model.addAttribute("task", task);
+            model.addAttribute("assignees", assignees);
+            return "showTask";
+        }
+        return "redirect:/dashboard";
+    }
+
 
 }

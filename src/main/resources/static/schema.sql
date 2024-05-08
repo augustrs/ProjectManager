@@ -41,8 +41,8 @@ CREATE TABLE TASK
     task_id          int auto_increment primary key,
     task_name        varchar(30),
     task_description varchar(255),
-    project_id       int not null,
-    foreign key (project_id) references PROJECT (project_id)
+    subproject_id       int not null,
+    foreign key (subproject_id) references SUBPROJECT(subproject_id)
 );
 
 

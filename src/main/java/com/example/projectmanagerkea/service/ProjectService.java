@@ -2,6 +2,7 @@ package com.example.projectmanagerkea.service;
 
 import com.example.projectmanagerkea.model.Project;
 import com.example.projectmanagerkea.model.Task;
+import com.example.projectmanagerkea.model.User;
 import com.example.projectmanagerkea.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +36,10 @@ public class ProjectService {
         return projectRepository.findTasksForSubProject(subProjectprojectId);
     }
 
+    public Task findTask(int taskId) throws SQLException {
+        return projectRepository.findTask(taskId);
+    }
+    public List<User> getAssigneesForTask(int taskId) throws SQLException {
+        return projectRepository.getAssigneesForTask(taskId);
+    }
 }
