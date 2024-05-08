@@ -31,15 +31,7 @@ public class ProjectRepository {
         ps.executeUpdate();
     }
 
-    public void createTask(Task newTask, int projectId) throws SQLException {
-        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "INSERT INTO task(name, description, project_id) VALUES (?, ?, ?)";
-        PreparedStatement ps = connection.prepareStatement(SQL);
-        ps.setString(1, newTask.getTaskName());
-        ps.setString(2, newTask.getTaskDescription());
-        ps.setInt(3, projectId);
-        ps.executeUpdate();
-    }
+
 
     public List<Project> getAllProjects() throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
@@ -126,5 +118,16 @@ public class ProjectRepository {
             assignees.add(user);
         }
         return assignees;
+    }
+
+
+    public void createTask(Task newTask, int subprojectId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "INSERT INTO task(task_name, task_description, subproject_id) VALUES (?, ?, ?)";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setString(1, newTask.getTaskName());
+        ps.setString(2, newTask.getTaskDescription());
+        ps.setInt(3, subprojectId);
+        ps.executeUpdate();
     }
 }

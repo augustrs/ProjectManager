@@ -135,23 +135,23 @@ public class ProjectController {
         return "redirect:/dashboard";
     }
 
-    @GetMapping("/createTaskForm")
-    public String showCreateTaskForm(HttpSession session,Model model) {
+    @GetMapping("{subprojectId}/createTask")
+    public String showCreateTaskForm(HttpSession session, Model model, @PathVariable int subprojectId) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+        if (loggedInUser != null) {
             model.addAttribute("task", new Task());
+            model.addAttribute("subprojectId", subprojectId);
             return "createTask";
         }
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/createTask")
-    public String createTask(HttpSession session,@ModelAttribute("task") Task newTask) throws SQLException {
+    @PostMapping("{subprojectId}/createTask")
+    public String createTask(HttpSession session, @ModelAttribute("task") Task newTask, @PathVariable int subprojectId) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
-            int projectId = 0;
-            projectService.createTask(newTask, projectId);
-            return "redirect:/dashboard";
+        if (loggedInUser != null) {
+            projectService.createTask(newTask, subprojectId);
+            return "redirect:/{subprojectId}/tasks";
         }
         return "redirect:/dashboard";
     }

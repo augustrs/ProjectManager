@@ -25,8 +25,8 @@ public class ProjectService {
         return projectRepository.getAllProjects();
     }
 
-    public void createTask(Task task, int projectId) throws SQLException {
-        projectRepository.createTask(task, projectId);
+    public void createTask(Task task, int subprojectId) throws SQLException {
+        projectRepository.createTask(task, subprojectId);
     }
 
     public List<Project> findSubprojectsForProject(int projectId) throws SQLException {
