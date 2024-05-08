@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Managed Projects</title>
+    <title>My Managed Project's subprojects</title>
 </head>
 <body>
 <h1>Project List</h1>
@@ -14,10 +14,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="project : ${projects}">
+    <tr th:each="project : ${subprojects}">
         <td th:text="${project.projectName}"></td>
         <td th:text="${project.projectDescription}"></td>
-        <td><a th:href="@{'/' + ${project.projectId} + '/subprojects'}">View Subprojects</a></td>
+        <td><a th:href="@{'/' + ${project.projectId} + '/tasks'}">View Tasks</a></td>
+
     </tr>
     </tbody>
 </table>

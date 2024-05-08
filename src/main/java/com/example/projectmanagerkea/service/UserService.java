@@ -25,10 +25,8 @@ public class UserService {
         userRepository.createUser(newUser);
     }
 
-    public int findManagerId(int userId) throws SQLException {
-        return userRepository.findManagerId(userId);
-    }
-    public List<Project> findProjectsByManagerId(int managerId) throws SQLException {
-        return userRepository.findProjects(managerId);
+
+    public List<Project> findManagedProjects(int managerUserId) throws SQLException {
+        return userRepository.findManagedProjects(managerUserId);
     }
 }

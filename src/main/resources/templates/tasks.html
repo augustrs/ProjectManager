@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Managed Project's subprojects</title>
+</head>
+<body>
+<h1>Project List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.taskName}"></td>
+        <td th:text="${task.taskDescription}"></td>
+
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

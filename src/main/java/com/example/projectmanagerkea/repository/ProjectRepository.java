@@ -4,7 +4,6 @@ import com.example.projectmanagerkea.model.Project;
 import com.example.projectmanagerkea.model.Task;
 import com.example.projectmanagerkea.util.ConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -51,9 +50,47 @@ public class ProjectRepository {
             Project project = new Project();
             project.setProjectName(rs.getString("name"));
             project.setProjectDescription(rs.getString("description"));
+            project.setProjectId(rs.getInt("project_id"));
             projects.add(project);
         }
         return projects;
     }
+
+
+
+    public List<Project> findSubprojectsForProject(int projectId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM subproject WHERE project_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, projectId);
+        ResultSet rs = ps.executeQuery();
+        List<Project> subprojects = new ArrayList<>();
+        while (rs.next()) {
+            Project subproject = new Project();
+            subproject.setProjectName(rs.getString("name"));
+            subproject.setProjectDescription(rs.getString("description"));
+            subproject.setProjectId(rs.getInt("subproject_id"));
+            subprojects.add(subproject);
+        }
+        return subprojects;
+    }
+    public List<Task> findTasksForSubProject(int subProjectprojectId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM task WHERE subproject_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, subProjectprojectId);
+        ResultSet rs = ps.executeQuery();
+        List<Task> tasks = new ArrayList<>();
+        while (rs.next()) {
+            Task task = new Task();
+            task.setTaskName(rs.getString("task_name"));
+            task.setTaskDescription(rs.getString("task_description"));
+            task.setTaskId(rs.getInt("task_id"));
+            tasks.add(task);
+
+        }
+        return tasks;
+    }
+
 
 }

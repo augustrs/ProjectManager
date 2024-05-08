@@ -58,47 +58,22 @@ public class UserRepository {
         ps.setString(3, newUser.getPassword());
         ps.setInt(4, newUser.getRoleId());
         ps.executeUpdate();
-
-        ResultSet generatedKeys = ps.getGeneratedKeys();
-        if (generatedKeys.next()) {
-            int userId = generatedKeys.getInt(1); // Assuming user_id is the first auto-generated key
-            if (newUser.getRoleId() == 2) {
-                String managerSQL = "INSERT INTO MANAGER(user_id) VALUES (?)";
-                PreparedStatement managerPS = connection.prepareStatement(managerSQL);
-                managerPS.setInt(1, userId);
-                managerPS.executeUpdate();
-            }
-        }
     }
 
 
-    public int findManagerId(int userId) throws SQLException {
 
+    public List<Project> findManagedProjects(int managerUserId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "SELECT M.manager_id FROM USER U JOIN MANAGER M ON U.user_id = M.user_id WHERE U.user_id = ?";
+        String SQL = "SELECT * FROM project WHERE USER_ID = ?";
         PreparedStatement ps = connection.prepareStatement(SQL);
-
-        ps.setInt(1, userId);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            return rs.getInt("manager_id");
-        }
-        return 0;
-    }
-
-    public List<Project> findProjects(int managerId) throws SQLException {
-        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "SELECT * FROM PROJECT WHERE manager_id = ?";
-        PreparedStatement ps = connection.prepareStatement(SQL);
-        ps.setInt(1, managerId);
+        ps.setInt(1, managerUserId);
         ResultSet rs = ps.executeQuery();
         List<Project> projects = new ArrayList<>();
         while (rs.next()) {
             Project project = new Project();
-            project.setProjectId(rs.getInt("project_id"));
             project.setProjectName(rs.getString("name"));
             project.setProjectDescription(rs.getString("description"));
+            project.setProjectId(rs.getInt("project_id"));
             projects.add(project);
         }
         return projects;

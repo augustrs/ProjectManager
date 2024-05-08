@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -131,8 +128,8 @@ public class ProjectController {
     public String createProject(HttpSession session,@ModelAttribute("project") Project newProject) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
-            int managerId = userService.findManagerId(loggedInUser.getUserId());
-            projectService.createProject(newProject, managerId);
+          //  int managerId = userService.findManagerId(loggedInUser.getUserId());
+         //   projectService.createProject(newProject, managerId);
             return "redirect:/managerDashboard";
         }
         return "redirect:/dashboard";
@@ -169,8 +166,8 @@ public class ProjectController {
     public String managedProjects(HttpSession session, Model model) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
-            int managerId = userService.findManagerId(loggedInUser.getUserId());
-            List<Project> projects = userService.findProjectsByManagerId(managerId);
+            int managerUserId = loggedInUser.getUserId();
+            List<Project> projects = userService.findManagedProjects(managerUserId);
             model.addAttribute("projects", projects);
             return "managedProjects";
         }
@@ -186,5 +183,28 @@ public class ProjectController {
         }
         return "redirect:/dashboard";
     }
+
+
+    @GetMapping("/{projectId}/subprojects")
+public String subprojects(@PathVariable int projectId, HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            List<Project> subprojects = projectService.findSubprojectsForProject(projectId);
+            model.addAttribute("subprojects", subprojects);
+            return "subprojects";
+        }
+        return "redirect:/dashboard";
+    }
+    @GetMapping("/{subProjectId}/tasks")
+    public String tasks(@PathVariable int subProjectId, HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            List<Task> tasks = projectService.findTasksForSubProject(subProjectId);
+            model.addAttribute("tasks", tasks);
+            return "tasks";
+        }
+        return "redirect:/dashboard";
+    }
+
 
 }

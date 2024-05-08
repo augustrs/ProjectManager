@@ -28,4 +28,11 @@ public class ProjectService {
         projectRepository.createTask(task, projectId);
     }
 
+    public List<Project> findSubprojectsForProject(int projectId) throws SQLException {
+        return projectRepository.findSubprojectsForProject(projectId);
+    }
+    public List<Task> findTasksForSubProject(int subProjectprojectId) throws SQLException {
+        return projectRepository.findTasksForSubProject(subProjectprojectId);
+    }
+
 }
