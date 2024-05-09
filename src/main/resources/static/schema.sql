@@ -39,7 +39,7 @@ CREATE TABLE SUBPROJECT
 CREATE TABLE STATUS
 (
     status_id int auto_increment primary key,
-    status    varchar(10) not null unique
+    status    varchar(20) not null unique
 );
 
 CREATE TABLE TASK

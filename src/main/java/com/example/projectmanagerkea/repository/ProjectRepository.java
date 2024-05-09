@@ -79,6 +79,9 @@ public class ProjectRepository {
             task.setTaskName(rs.getString("task_name"));
             task.setTaskDescription(rs.getString("task_description"));
             task.setTaskId(rs.getInt("task_id"));
+            task.setTaskTime(rs.getInt("time"));
+            task.setTaskPrice(rs.getFloat("price"));
+            task.setTaskStatusId(rs.getInt("status_id"));
             tasks.add(task);
 
         }
@@ -97,6 +100,9 @@ public class ProjectRepository {
                 task.setTaskName(rs.getString("task_name"));
                 task.setTaskDescription(rs.getString("task_description"));
                 task.setTaskId(rs.getInt("task_id"));
+                task.setTaskTime(rs.getInt("time"));
+                task.setTaskPrice(rs.getFloat("price"));
+                task.setTaskStatusId(rs.getInt("status_id"));
             }
             return task;
 
@@ -123,11 +129,34 @@ public class ProjectRepository {
 
     public void createTask(Task newTask, int subprojectId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "INSERT INTO task(task_name, task_description, subproject_id) VALUES (?, ?, ?)";
+        String SQL = "INSERT INTO task(task_name, task_description, time, price ,status_id, subproject_id) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(SQL);
         ps.setString(1, newTask.getTaskName());
         ps.setString(2, newTask.getTaskDescription());
-        ps.setInt(3, subprojectId);
+        ps.setInt(3, newTask.getTaskTime());
+        ps.setFloat(4, newTask.getTaskPrice());
+        ps.setInt(5, 1); // status_id 1 is for "Not started"
+        ps.setInt(6, subprojectId);
+        ps.executeUpdate();
+    }
+    public String getStatusForTask(int taskId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT s.status FROM TASK t JOIN STATUS s ON t.status_id = s.status_id WHERE t.task_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, taskId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getString("status");
+        }
+        return null;
+    }
+
+    public void assignUserToTask(int taskId, int userId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "INSERT INTO employee_task(user_id, task_id) VALUES (?, ?)";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, userId);
+        ps.setInt(2, taskId);
         ps.executeUpdate();
     }
 }

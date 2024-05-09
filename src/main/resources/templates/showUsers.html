@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show users</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Real Name</th>
+        <th>Username</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.realName}"></td>
+        <td th:text="${user.username}"></td>
+        <td>
+            <span th:switch="${user.roleId}">
+                <span th:case="1">Admin</span>
+                <span th:case="2">Manager</span>
+                <span th:case="3">Employee</span>
+            </span>
+        </td>
+</table>
+<a href="/createUserForm">Create user</a>
+
+</body>
+</html>

@@ -29,4 +29,10 @@ public class UserService {
     public List<Project> findManagedProjects(int managerUserId) throws SQLException {
         return userRepository.findManagedProjects(managerUserId);
     }
+    public List<User> getAllUsers() throws SQLException {
+        return userRepository.getAllUsers();
+    }
+    public List<User> getAllEmployees() throws SQLException {
+        return userRepository.getAllEmployees();
+    }
 }

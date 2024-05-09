@@ -78,4 +78,36 @@ public class UserRepository {
         }
         return projects;
     }
+    public List<User> getAllUsers() throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM USER";
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(SQL);
+        List<User> users = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User();
+            user.setRealName(rs.getString("real_name"));
+            user.setUsername(rs.getString("username"));
+            user.setUserId(rs.getInt("user_id"));
+            user.setRoleId(rs.getInt("role_id"));
+            users.add(user);
+        }
+        return users;
+    }
+    public List<User> getAllEmployees() throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM USER WHERE role_id = 3";
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(SQL);
+        List<User> users = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User();
+            user.setRealName(rs.getString("real_name"));
+            user.setUsername(rs.getString("username"));
+            user.setUserId(rs.getInt("user_id"));
+            user.setRoleId(rs.getInt("role_id"));
+            users.add(user);
+        }
+        return users;
+    }
 }

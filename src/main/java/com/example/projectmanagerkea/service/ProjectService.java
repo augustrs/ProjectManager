@@ -42,4 +42,10 @@ public class ProjectService {
     public List<User> getAssigneesForTask(int taskId) throws SQLException {
         return projectRepository.getAssigneesForTask(taskId);
     }
+    public String getStatusForTask(int taskId) throws SQLException {
+        return projectRepository.getStatusForTask(taskId);
+    }
+    public void assignUserToTask(int taskId, int userId) throws SQLException {
+        projectRepository.assignUserToTask(taskId, userId);
+    }
 }

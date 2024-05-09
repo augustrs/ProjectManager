@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -109,7 +110,7 @@ public class ProjectController {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
             userService.createUser(newUser);
-            return "redirect:/admin";
+            return "redirect:/allUsers";
         }
         return "redirect:/dashboard";
     }
@@ -212,9 +213,50 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
         if (loggedInUser != null ) {
             List<User> assignees = projectService.getAssigneesForTask(taskId);
             Task task = projectService.findTask(taskId);
+            String status = projectService.getStatusForTask(taskId);
             model.addAttribute("task", task);
             model.addAttribute("assignees", assignees);
+            model.addAttribute("status", status);
+            if (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1) {
+                List<User> allEmployees = userService.getAllEmployees();
+                List<User> unassignedEmployees = new ArrayList<>();
+                for (User employee : allEmployees) {
+                    boolean isAssigned = false;
+                    for (User assignee : assignees) {
+                        if (assignee.getUserId() == employee.getUserId()) {
+                            isAssigned = true;
+                            break;
+                        }
+                    }
+                    if (!isAssigned) {
+                        unassignedEmployees.add(employee);
+                    }
+                }
+
+                model.addAttribute("allEmployees", unassignedEmployees);
+            }
+
             return "showTask";
+        }
+        return "redirect:/dashboard";
+    }
+    @PostMapping("/{taskId}/assignUser")
+    public String assignUser(@PathVariable int taskId, @RequestParam int userId, HttpSession session) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1) {
+            projectService.assignUserToTask(taskId, userId);
+            return "redirect:/{taskId}/showTask";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/allUsers")
+    public String allUsers(HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            List<User> users = userService.getAllUsers();
+            model.addAttribute("users", users);
+            return "showUsers";
         }
         return "redirect:/dashboard";
     }
