@@ -36,12 +36,22 @@ CREATE TABLE SUBPROJECT
     foreign key (project_id) references PROJECT (project_id)
 );
 
+CREATE TABLE STATUS
+(
+    status_id int auto_increment primary key,
+    status    varchar(10) not null unique
+);
+
 CREATE TABLE TASK
 (
     task_id          int auto_increment primary key,
     task_name        varchar(30),
     task_description varchar(255),
-    subproject_id       int not null,
+    time             int not null,
+    price            float not null,
+    status_id        int not null,
+    subproject_id    int not null,
+    foreign key (status_id) references STATUS(status_id),
     foreign key (subproject_id) references SUBPROJECT(subproject_id)
 );
 
