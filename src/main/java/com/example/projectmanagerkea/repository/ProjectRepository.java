@@ -167,4 +167,26 @@ public class ProjectRepository {
         ps.setInt(2, taskId);
         ps.executeUpdate();
     }
+    public List<Task> assignedTasks(int userId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT t.task_name, t.task_id, t.task_description, t.time, t.price, t.status_id " +
+                "FROM EMPLOYEE_TASK et " +
+                "JOIN TASK t ON et.task_id = t.task_id " +
+                "WHERE et.user_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, userId);
+        ResultSet rs = ps.executeQuery();
+        List<Task> tasks = new ArrayList<>();
+        while (rs.next()) {
+            Task task = new Task();
+            task.setTaskName(rs.getString("task_name"));
+            task.setTaskId(rs.getInt("task_id"));
+            task.setTaskDescription(rs.getString("task_description"));
+            task.setTaskTime(rs.getInt("time"));
+            task.setTaskPrice(rs.getFloat("price"));
+            task.setTaskStatusId(rs.getInt("status_id"));
+            tasks.add(task);
+        }
+        return tasks;
+    }
 }

@@ -41,16 +41,16 @@ public class ProjectController {
     @PostMapping("/login")
     public String loginSubmit(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         try {
-            User user = userService.verifyLogIn(username,password);
-            if (user!=null && user.getRoleId() == 1) {
+            User user = userService.verifyLogIn(username, password);
+            if (user != null && user.getRoleId() == 1) {
                 session.setAttribute("loggedInUser", user);
 
                 return "redirect:/admin";
-            } else if (user!=null && user.getRoleId() == 3){
+            } else if (user != null && user.getRoleId() == 3) {
                 session.setAttribute("loggedInUser", user);
 
                 return "redirect:/dashboard";
-            } else if (user!=null && user.getRoleId() == 2){
+            } else if (user != null && user.getRoleId() == 2) {
                 session.setAttribute("loggedInUser", user);
 
                 return "redirect:/managerDashboard";
@@ -96,7 +96,7 @@ public class ProjectController {
     }
 
     @GetMapping("/createUserForm")
-    public String showCreateUserForm(HttpSession session,Model model) {
+    public String showCreateUserForm(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
             model.addAttribute("user", new User());
@@ -106,7 +106,7 @@ public class ProjectController {
     }
 
     @PostMapping("/createUser")
-    public String createUser(HttpSession session,@ModelAttribute("user") User newUser) throws SQLException {
+    public String createUser(HttpSession session, @ModelAttribute("user") User newUser) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
             userService.createUser(newUser);
@@ -116,7 +116,7 @@ public class ProjectController {
     }
 
     @GetMapping("/createProjectForm")
-    public String showCreateProjectForm(HttpSession session,Model model) {
+    public String showCreateProjectForm(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
             model.addAttribute("project", new Project());
@@ -126,11 +126,11 @@ public class ProjectController {
     }
 
     @PostMapping("/createProject")
-    public String createProject(HttpSession session,@ModelAttribute("project") Project newProject) throws SQLException {
+    public String createProject(HttpSession session, @ModelAttribute("project") Project newProject) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
-          //  int managerId = userService.findManagerId(loggedInUser.getUserId());
-         //   projectService.createProject(newProject, managerId);
+            //  int managerId = userService.findManagerId(loggedInUser.getUserId());
+            //   projectService.createProject(newProject, managerId);
             return "redirect:/managerDashboard";
         }
         return "redirect:/dashboard";
@@ -174,6 +174,7 @@ public class ProjectController {
         }
         return "redirect:/dashboard";
     }
+
     @GetMapping("/allProjects")
     public String allProjects(HttpSession session, Model model) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -187,7 +188,7 @@ public class ProjectController {
 
 
     @GetMapping("/{projectId}/subprojects")
-public String subprojects(@PathVariable int projectId, HttpSession session, Model model) throws SQLException {
+    public String subprojects(@PathVariable int projectId, HttpSession session, Model model) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
             List<Project> subprojects = projectService.findSubprojectsForProject(projectId);
@@ -196,6 +197,7 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
         }
         return "redirect:/dashboard";
     }
+
     @GetMapping("/{subProjectId}/tasks")
     public String tasks(@PathVariable int subProjectId, HttpSession session, Model model) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -210,7 +212,7 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
     @GetMapping("/{taskId}/showTask")
     public String showTask(@PathVariable int taskId, HttpSession session, Model model) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null ) {
+        if (loggedInUser != null) {
             List<User> assignees = projectService.getAssigneesForTask(taskId);
             Task task = projectService.findTask(taskId);
             String status = projectService.getStatusForTask(taskId);
@@ -234,12 +236,16 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
                 }
 
                 model.addAttribute("allEmployees", unassignedEmployees);
+                return "showTask";
+            } else if (loggedInUser.getRoleId() == 3){
+                return "showTaskEmp";
             }
-
-            return "showTask";
         }
         return "redirect:/dashboard";
     }
+
+
+
     @PostMapping("/{taskId}/assignUser")
     public String assignUser(@PathVariable int taskId, @RequestParam int userId, HttpSession session) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -267,8 +273,19 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
             projectService.unassignUserFromTask(taskId, userId);
             return "redirect:/{taskId}/showTask";
         }
+        return "redirect:/{taskId}/showTask";
+    }
+    @GetMapping("/assignedTasks")
+    public String assignedTasks(HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            List<Task> tasks = projectService.assignedTasksForUser(loggedInUser.getUserId());
+            model.addAttribute("tasks", tasks);
+            return "assignedTasks";
+        }
         return "redirect:/dashboard";
     }
+
 
 
 }
