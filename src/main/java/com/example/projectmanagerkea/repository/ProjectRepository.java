@@ -159,4 +159,12 @@ public class ProjectRepository {
         ps.setInt(2, taskId);
         ps.executeUpdate();
     }
+    public void unassignUserFromTask(int taskId, int userId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "DELETE FROM employee_task WHERE user_id = ? AND task_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, userId);
+        ps.setInt(2, taskId);
+        ps.executeUpdate();
+    }
 }

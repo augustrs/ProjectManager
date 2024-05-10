@@ -24,7 +24,13 @@
         <td th:text="${task.taskDescription}"></td>
         <td>
             <ul>
-                <li th:each="assignee : ${assignees}" th:text="${assignee.realName}"></li>
+                <li th:each="assignee : ${assignees}">
+                    <span  th:text="${assignee.realName}"></span>
+                    <form method="post" th:action="@{'/' + ${taskId} + '/unassignUser'}">
+                        <input type="hidden" name="userId" th:value="${assignee.userId}">
+                        <button type="submit">Unassign</button>
+                    </form>
+                </li>
             </ul>
         </td>
         <td th:text="${task.taskTime}"></td>

@@ -260,6 +260,15 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
         }
         return "redirect:/dashboard";
     }
+    @PostMapping("/{taskId}/unassignUser")
+    public String unassignUser(@PathVariable int taskId, @RequestParam int userId, HttpSession session) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1) {
+            projectService.unassignUserFromTask(taskId, userId);
+            return "redirect:/{taskId}/showTask";
+        }
+        return "redirect:/dashboard";
+    }
 
 
 }
