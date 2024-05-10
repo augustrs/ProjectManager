@@ -270,5 +270,34 @@ public String subprojects(@PathVariable int projectId, HttpSession session, Mode
         return "redirect:/dashboard";
     }
 
+    @GetMapping("/{taskId}/updateTask")
+    public String showUpdateTaskForm(@PathVariable int taskId, HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Task taskToUpdate = projectService.findTask(taskId);
+
+            if (taskToUpdate != null) {
+                model.addAttribute("task", taskToUpdate);
+
+                return "updateTask";
+            } else {
+                return "error";
+            }
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/{taskId}/updateTask")
+    public String updateTask(@ModelAttribute("task") Task updatedTask, HttpSession session) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            projectService.updateTask(updatedTask);
+            return "redirect:/{taskId}/showTask";
+        }
+
+        return "redirect:/dashboard";
+    }
 
 }

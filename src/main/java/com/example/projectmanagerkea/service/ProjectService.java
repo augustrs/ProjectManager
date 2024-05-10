@@ -51,4 +51,7 @@ public class ProjectService {
     public void unassignUserFromTask(int taskId, int userId) throws SQLException {
         projectRepository.unassignUserFromTask(taskId, userId);
     }
+    public void updateTask(Task updatedTask) throws SQLException {
+        projectRepository.updateTask(updatedTask);
+    }
 }

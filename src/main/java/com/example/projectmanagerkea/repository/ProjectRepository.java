@@ -167,4 +167,18 @@ public class ProjectRepository {
         ps.setInt(2, taskId);
         ps.executeUpdate();
     }
+
+    public void updateTask(Task updatedTask) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "UPDATE TASK SET task_name = ?, task_description = ?, time = ?, price = ? WHERE task_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+
+        ps.setString(1, updatedTask.getTaskName());
+        ps.setString(2, updatedTask.getTaskDescription());
+        ps.setInt(3, updatedTask.getTaskTime());
+        ps.setFloat(4, updatedTask.getTaskPrice());
+        ps.setInt(5, updatedTask.getTaskId());
+
+        ps.executeUpdate();
+    }
 }
