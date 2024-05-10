@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${task.taskName}"></title>
+</head>
+<body>
+<h1 th:text="${task.taskName}"></h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Assignees</th>
+        <th>Time in hour(s)</th>
+        <th>Price</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${task.taskName}"></td>
+        <td th:text="${task.taskDescription}"></td>
+        <td>
+            <ul>
+                <li th:each="assignee : ${assignees}">
+                    <span  th:text="${assignee.realName}"></span>
+                </li>
+            </ul>
+        </td>
+        <td th:text="${task.taskTime}"></td>
+        <td th:text="${task.taskPrice}"></td>
+        <td th:text="${status}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
