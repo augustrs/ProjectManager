@@ -25,9 +25,7 @@ public class ProjectService {
         return projectRepository.getAllProjects();
     }
 
-    public void createTask(Task task, int subprojectId) throws SQLException {
-        projectRepository.createTask(task, subprojectId);
-    }
+
 
     public List<Project> findSubprojectsForProject(int projectId) throws SQLException {
         return projectRepository.findSubprojectsForProject(projectId);
@@ -36,25 +34,4 @@ public class ProjectService {
         return projectRepository.findTasksForSubProject(subProjectprojectId);
     }
 
-    public Task findTask(int taskId) throws SQLException {
-        return projectRepository.findTask(taskId);
-    }
-    public List<User> getAssigneesForTask(int taskId) throws SQLException {
-        return projectRepository.getAssigneesForTask(taskId);
-    }
-    public String getStatusForTask(int taskId) throws SQLException {
-        return projectRepository.getStatusForTask(taskId);
-    }
-    public void assignUserToTask(int taskId, int userId) throws SQLException {
-        projectRepository.assignUserToTask(taskId, userId);
-    }
-    public void unassignUserFromTask(int taskId, int userId) throws SQLException {
-        projectRepository.unassignUserFromTask(taskId, userId);
-    }
-    public List<Task> assignedTasksForUser(int userId) throws SQLException {
-        return projectRepository.assignedTasks(userId);
-    }
-    public void updateTask(Task updatedTask) throws SQLException {
-        projectRepository.updateTask(updatedTask);
-    }
 }
