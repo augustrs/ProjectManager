@@ -23,7 +23,7 @@ public class ProjectRepository {
 
     public void createProject(Project newProject, int managerId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "INSERT INTO project(name, description, manager_id) VALUES (?, ?, ?)";
+        String SQL = "INSERT INTO project(name, description, user_id) VALUES (?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(SQL);
         ps.setString(1, newProject.getProjectName());
         ps.setString(2, newProject.getProjectDescription());

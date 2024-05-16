@@ -33,7 +33,7 @@ public class ProjectController {
     @GetMapping("/createProjectForm")
     public String showCreateProjectForm(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
             model.addAttribute("project", new Project());
             return "createProject";
         }
@@ -43,10 +43,13 @@ public class ProjectController {
     @PostMapping("/createProject")
     public String createProject(HttpSession session, @ModelAttribute("project") Project newProject) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
-            //  int managerId = userService.findManagerId(loggedInUser.getUserId());
-            //   projectService.createProject(newProject, managerId);
-            return "redirect:/managerDashboard";
+        if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
+            int managerId = loggedInUser.getUserId();
+            projectService.createProject(newProject, managerId);
+            if (loggedInUser.getRoleId() == 2) {
+                return "redirect:/managerDashboard";
+            }
+            return "redirect:/admin";
         }
         return "redirect:/dashboard";
     }
