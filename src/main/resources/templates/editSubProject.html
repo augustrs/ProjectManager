@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit subproject</title>
+</head>
+<body>
+<form th:action="@{/editSubProject}" th:object="${subProject}" method="post">
+
+    <label for="name">Subproject name:</label>
+    <input type="text" id="name" th:field="*{projectName}" required>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" th:field="*{projectDescription}">
+
+    <input type="hidden" th:field="*{projectId}">
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
