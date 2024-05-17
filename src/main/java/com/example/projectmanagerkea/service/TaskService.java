@@ -18,8 +18,6 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-
-
     public void createTask(Task task, int subprojectId) throws SQLException {
         taskRepository.createTask(task, subprojectId);
     }
@@ -41,7 +39,10 @@ public class TaskService {
     public List<Task> assignedTasksForUser(int userId) throws SQLException {
         return taskRepository.assignedTasks(userId);
     }
-    public void updateTask(Task updatedTask) throws SQLException {
-        taskRepository.updateTask(updatedTask);
+    public void updateTask(Task updatedTask, int statusId) throws SQLException {
+        taskRepository.updateTask(updatedTask, statusId);
+    }
+    public void deleteTask(int taskId) throws SQLException {
+        taskRepository.deleteTask(taskId);
     }
 }

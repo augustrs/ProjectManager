@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>My Managed subproject's tasks</title>
+    <script type="text/javascript">
+        function confirmDeletion() {
+            return confirm("Er du sikker på du vil slette denne opgave?");
+        }
+    </script>
 </head>
 <body>
 <h1>Task List</h1>
@@ -17,9 +22,15 @@
     <tr th:each="task : ${tasks}">
         <td th:text="${task.taskName}"></td>
         <td th:text="${task.taskDescription}"></td>
-        <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">View Task</a></td>
+        <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">Se opgave</a></td>
 
+        <td><a th:href="@{'/' + ${task.taskId} + '/updateTask'}">Opdater opgave</a></td>
 
+        <td>
+            <form th:action="@{'/' + ${subProjectId} + '/' + ${task.taskId} + '/deleteTask'}" method="post" onsubmit="return confirmDeletion()" style="display:inline;">
+                <button type="submit">Slet opgave</button>
+            </form>
+        </td>
 
     </tr>
     </tbody>

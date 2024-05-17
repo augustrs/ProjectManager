@@ -114,11 +114,11 @@ public class TaskController {
     }
 
     @PostMapping("/{taskId}/updateTask")
-    public String updateTask(@ModelAttribute("task") Task updatedTask, HttpSession session) throws SQLException {
+    public String updateTask(@ModelAttribute("task") Task updatedTask, @RequestParam("taskStatus") int statusId, HttpSession session) throws SQLException {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser != null) {
-            taskService.updateTask(updatedTask);
+            taskService.updateTask(updatedTask, statusId);
             return "redirect:/{taskId}/showTask";
         }
 
@@ -145,4 +145,15 @@ public class TaskController {
         }
         return "redirect:/dashboard";
     }
+
+    @PostMapping("/{subprojectId}/{taskId}/deleteTask")
+    public String deleteTask(@PathVariable int subprojectId, @PathVariable int taskId, HttpSession session) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            taskService.deleteTask(taskId);
+            return "redirect:/{subprojectId}/tasks";
+        }
+        return "redirect:/dashboard";
+    }
+
 }

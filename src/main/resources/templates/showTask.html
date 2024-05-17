@@ -44,8 +44,14 @@
             </label>
             <button type="submit">Assign</button>
         </form></td>
+
+        <td>
+            <a th:href="@{'/' + ${taskId} + '/updateTask'}">Update Task</a>
+        </td>
     </tr>
     </tbody>
+
+
 </table>
 </body>
 </html>
