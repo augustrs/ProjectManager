@@ -124,23 +124,29 @@ public class TaskRepository {
         return tasks;
     }
 
-    public void updateTask(Task updatedTask) throws SQLException {
+    public void updateTask(Task updatedTask, int statusId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "UPDATE TASK SET task_name = ?, task_description = ?, time = ?, price = ? WHERE task_id = ?";
+        String SQL = "UPDATE TASK SET task_name = ?, task_description = ?, time = ?, price = ?, status_id = ? WHERE task_id = ?";
         PreparedStatement ps = connection.prepareStatement(SQL);
 
         ps.setString(1, updatedTask.getTaskName());
         ps.setString(2, updatedTask.getTaskDescription());
         ps.setInt(3, updatedTask.getTaskTime());
         ps.setFloat(4, updatedTask.getTaskPrice());
-        ps.setInt(5, updatedTask.getTaskId());
+        ps.setInt(5, statusId);
+        ps.setInt(6, updatedTask.getTaskId());
 
         ps.executeUpdate();
     }
 
+    public void deleteTask(int id) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url,db_username,db_password);
+        String SQL = "DELETE FROM TASK WHERE TASK_ID = ?";
 
-
-
+        PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setInt(1,id);
+            ps.executeUpdate();
+    }
 
 
 
