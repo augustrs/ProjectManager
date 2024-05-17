@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <title>Opgaveliste for mit administrerede subprojects</title>
+
+    <script type="text/javascript">
+        function confirmDeletion() {
+            return confirm("Er du sikker på du vil slette denne opgave?");
+        }
+    </script>
+
 </head>
 <body>
 <h1>Opgave liste</h1>
@@ -19,7 +27,13 @@
         <td th:text="${task.taskDescription}"></td>
         <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">Se opgave</a></td>
 
+        <td><a th:href="@{'/' + ${task.taskId} + '/updateTask'}">Opdater opgave</a></td>
 
+        <td>
+            <form th:action="@{'/' + ${subProjectId} + '/' + ${task.taskId} + '/deleteTask'}" method="post" onsubmit="return confirmDeletion()" style="display:inline;">
+                <button type="submit">Slet opgave</button>
+            </form>
+        </td>
 
     </tr>
     </tbody>

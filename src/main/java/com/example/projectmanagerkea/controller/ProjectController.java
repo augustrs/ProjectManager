@@ -94,6 +94,38 @@ public class ProjectController {
         return "redirect:/dashboard";
     }
 
+    @GetMapping("{subProjectId}/editSubProject")
+    public String editSubProject(@PathVariable int subProjectId, HttpSession session, Model model) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            Project subProject = projectService.findSubProject(subProjectId);
+            model.addAttribute("subProject", subProject);
+            model.addAttribute("subProjectId", subProjectId);
+            return "editSubProject";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/editSubProject")
+    public String editSubProject(@ModelAttribute("subProject") Project subProject, HttpSession session) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            projectService.editSubProject(subProject);
+            return "redirect:/allProjects";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/{subProjectId}/deleteSubProject")
+    public String deleteSubProject(@PathVariable int subProjectId, HttpSession session) throws SQLException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            projectService.deleteSubProject(subProjectId);
+            return "redirect:/allProjects";
+        }
+        return "redirect:/dashboard";
+    }
+
 
 
 

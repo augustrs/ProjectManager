@@ -25,7 +25,16 @@
         <input type="number" id="taskPrice" th:value="${task.taskPrice}">
         <br>
 
-        <button type="submit">Opdater opgave</button>
+        <label for="taskStatus">Task Status:</label>
+        <select id="taskStatus" name="taskStatus" th:value="${task.taskStatusId}">
+            <option value="1" th:selected="${task.taskStatusId == 'Pending'}">Pending</option>
+            <option value="2" th:selected="${task.taskStatusId == 'In Progress'}">In Progress</option>
+            <option value="3" th:selected="${task.taskStatusId == 'Completed'}">Completed</option>
+        </select>
+        <br>
+
+        <button type="submit">Update Task</button>
+
     </form>
 
 </body>
