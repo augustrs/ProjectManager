@@ -2,20 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Managed subproject's tasks</title>
+
+    <title>Opgaveliste for mit administrerede subprojects</title>
+
     <script type="text/javascript">
         function confirmDeletion() {
             return confirm("Er du sikker på du vil slette denne opgave?");
         }
     </script>
+
 </head>
 <body>
-<h1>Task List</h1>
+<h1>Opgave liste</h1>
 <table border="1">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Description</th>
+        <th>Navn</th>
+        <th>Beskrivelse</th>
     </tr>
     </thead>
     <tbody>
@@ -35,6 +38,6 @@
     </tr>
     </tbody>
 </table>
-<a th:href="@{'/' + ${subProjectId} + '/createTask'}">Create new task</a>
+<a th:href="@{'/' + ${subProjectId} + '/createTask'}">Opret ny opgave</a>
 </body>
 </html>

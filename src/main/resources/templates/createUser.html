@@ -6,24 +6,24 @@
 </head>
 <body>
 <form th:action="@{/createUser}" th:object="${user}" method="post">
-    <label for = "realName">Real name:</label>
+    <label for = "realName">Fulde navn:</label>
     <input type="text" id="realName" th:field="*{realName}" required>
 
-    <label for = "username">Username:</label>
+    <label for = "username">Brugernavn:</label>
     <input type ="text" id="username" th:field="*{username}" required>
 
-    <label for = "password">Password:</label>
+    <label for = "password">Adgangskode:</label>
     <input type ="password" id="password" th:field="*{password}">
 
-    <label for="roleId">Role:</label>
+    <label for="roleId">Rolle:</label>
     <select id ="roleId" th:field="*{roleId}" required>
         <option value ="1">Admin</option>
-        <option value ="2">Manager</option>
-        <option value ="3">Member</option>
+        <option value ="2">Leder</option>
+        <option value ="3">Medarbejder</option>
 
     </select>
 
-    <button type="submit">Submit</button>
+    <button type="submit">Indsend</button>
 </form>
 </body>
 </html>
