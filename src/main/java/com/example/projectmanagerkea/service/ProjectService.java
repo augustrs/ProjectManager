@@ -33,5 +33,14 @@ public class ProjectService {
     public List<Task> findTasksForSubProject(int subProjectprojectId) throws SQLException {
         return projectRepository.findTasksForSubProject(subProjectprojectId);
     }
+    public Project findSubProject(int subProjectId) throws SQLException {
+        return projectRepository.findSubProject(subProjectId);
+    }
+    public void editSubProject(Project subProject) throws SQLException {
+        projectRepository.editSubProject(subProject);
+    }
+    public void deleteSubProject(int subProjectId) throws SQLException {
+        projectRepository.deleteSubProject(subProjectId);
+    }
 
 }
