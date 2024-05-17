@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Managed Project's subprojects</title>
+    <title> Subprojekter til mit administrerede projekt</title>
 </head>
 <body>
-<h1>Subproject List</h1>
+<h1>Subprojekt Liste</h1>
 <table border="1">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Description</th>
+        <th>Navn</th>
+        <th>Beskrivelse</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="project : ${subprojects}">
         <td th:text="${project.projectName}"></td>
         <td th:text="${project.projectDescription}"></td>
-        <td><a th:href="@{'/' + ${project.projectId} + '/tasks'}">View Tasks</a></td>
+        <td><a th:href="@{'/' + ${project.projectId} + '/tasks'}">Se opgaver</a></td>
 
     </tr>
     </tbody>

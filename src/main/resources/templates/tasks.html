@@ -2,28 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Managed subproject's tasks</title>
+    <title>Opgaveliste for mit administrerede subprojects</title>
 </head>
 <body>
-<h1>Task List</h1>
+<h1>Opgave liste</h1>
 <table border="1">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Description</th>
+        <th>Navn</th>
+        <th>Beskrivelse</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="task : ${tasks}">
         <td th:text="${task.taskName}"></td>
         <td th:text="${task.taskDescription}"></td>
-        <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">View Task</a></td>
+        <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">Se opgave</a></td>
 
 
 
     </tr>
     </tbody>
 </table>
-<a th:href="@{'/' + ${subProjectId} + '/createTask'}">Create new task</a>
+<a th:href="@{'/' + ${subProjectId} + '/createTask'}">Opret ny opgave</a>
 </body>
 </html>

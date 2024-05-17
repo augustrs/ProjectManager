@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Show all projects</title>
+    <title>Hvis alle projekter</title>
 </head>
 <body>
-<h1>Project List</h1>
+<h1>Projektliste</h1>
 <table border="1">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Description</th>
+        <th>Navn</th>
+        <th>Beskrivelse</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="project : ${projects}">
         <td th:text="${project.projectName}"></td>
         <td th:text="${project.projectDescription}"></td>
-        <td><a th:href="@{'/' + ${project.projectId} + '/subprojects'}">View Subprojects</a></td>
+        <td><a th:href="@{'/' + ${project.projectId} + '/subprojects'}">Se Subprojects</a></td>
     </tr>
     </tbody>
 </table>
-<a href="/createProjectForm">Create a new project</a>
+<a href="/createProjectForm">Opret et nyt projekt</a>
 </body>
 </html>
