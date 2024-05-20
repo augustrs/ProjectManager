@@ -28,9 +28,11 @@ public class TaskController {
     }
 
     @GetMapping("/{taskId}/showTask")
-    public String showTask(@PathVariable int taskId, HttpSession session, Model model) throws SQLException {
+    public String showTask(@PathVariable int taskId, HttpSession session, Model model) {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
+
             List<User> assignees = taskService.getAssigneesForTask(taskId);
             Task task = taskService.findTask(taskId);
             String status = taskService.getStatusForTask(taskId);
@@ -52,12 +54,15 @@ public class TaskController {
                         unassignedEmployees.add(employee);
                     }
                 }
-
                 model.addAttribute("allEmployees", unassignedEmployees);
                 return "showTask";
             } else if (loggedInUser.getRoleId() == 3){
                 return "showTaskEmp";
             }
+        }
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
         }
         return "redirect:/dashboard";
     }
@@ -65,27 +70,41 @@ public class TaskController {
 
 
     @PostMapping("/{taskId}/assignUser")
-    public String assignUser(@PathVariable int taskId, @RequestParam int userId, HttpSession session) throws SQLException {
+    public String assignUser(@PathVariable int taskId, @RequestParam int userId, HttpSession session, Model model) {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1) {
             taskService.assignUserToTask(taskId, userId);
             return "redirect:/{taskId}/showTask";
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
 
     @PostMapping("/{taskId}/unassignUser")
-    public String unassignUser(@PathVariable int taskId, @RequestParam int userId, HttpSession session) throws SQLException {
+    public String unassignUser(@PathVariable int taskId, @RequestParam int userId, HttpSession session, Model model) {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1) {
             taskService.unassignUserFromTask(taskId, userId);
             return "redirect:/{taskId}/showTask";
         }
         return "redirect:/{taskId}/showTask";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
+
+
     @GetMapping("/assignedTasks")
-    public String assignedTasks(HttpSession session, Model model) throws SQLException {
+    public String assignedTasks(HttpSession session, Model model) {
+        try {
+
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             List<Task> tasks = taskService.assignedTasksForUser(loggedInUser.getUserId());
@@ -93,10 +112,15 @@ public class TaskController {
             return "assignedTasks";
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
     @GetMapping("/{taskId}/updateTask")
-    public String showUpdateTaskForm(@PathVariable int taskId, HttpSession session, Model model) throws SQLException {
+    public String showUpdateTaskForm(@PathVariable int taskId, HttpSession session, Model model)  {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser != null) {
@@ -111,10 +135,15 @@ public class TaskController {
             }
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
     @PostMapping("/{taskId}/updateTask")
-    public String updateTask(@ModelAttribute("task") Task updatedTask, @RequestParam("taskStatus") int statusId, HttpSession session) throws SQLException {
+    public String updateTask(@ModelAttribute("task") Task updatedTask, @RequestParam("taskStatus") int statusId, HttpSession session, Model model) {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser != null) {
@@ -123,6 +152,10 @@ public class TaskController {
         }
 
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
     @GetMapping("{subprojectId}/createTask")
@@ -137,23 +170,33 @@ public class TaskController {
     }
 
     @PostMapping("{subprojectId}/createTask")
-    public String createTask(HttpSession session, @ModelAttribute("task") Task newTask, @PathVariable int subprojectId) throws SQLException {
+    public String createTask(HttpSession session, @ModelAttribute("task") Task newTask, @PathVariable int subprojectId, Model model) {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             taskService.createTask(newTask, subprojectId);
             return "redirect:/{subprojectId}/tasks";
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
     @PostMapping("/{subprojectId}/{taskId}/deleteTask")
-    public String deleteTask(@PathVariable int subprojectId, @PathVariable int taskId, HttpSession session) throws SQLException {
+    public String deleteTask(@PathVariable int subprojectId, @PathVariable int taskId, HttpSession session, Model model)  {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
             taskService.deleteTask(taskId);
             return "redirect:/{subprojectId}/tasks";
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
 }

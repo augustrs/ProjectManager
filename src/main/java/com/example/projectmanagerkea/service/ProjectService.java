@@ -18,29 +18,61 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void createProject(Project newProject, int managerId) throws SQLException {
-        projectRepository.createProject(newProject, managerId);
+    public void createProject(Project newProject, int managerId) {
+        try {
+            projectRepository.createProject(newProject, managerId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public List<Project> getAllProjects() throws SQLException {
-        return projectRepository.getAllProjects();
+
+    public List<Project> getAllProjects() {
+        try {
+            return projectRepository.getAllProjects();
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
 
 
+    public List<Project> findSubprojectsForProject(int projectId) {
+        try {
+            return projectRepository.findSubprojectsForProject(projectId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
+    }
 
-    public List<Project> findSubprojectsForProject(int projectId) throws SQLException {
-        return projectRepository.findSubprojectsForProject(projectId);
+    public List<Task> findTasksForSubProject(int subProjectprojectId) {
+        try {
+            return projectRepository.findTasksForSubProject(subProjectprojectId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public List<Task> findTasksForSubProject(int subProjectprojectId) throws SQLException {
-        return projectRepository.findTasksForSubProject(subProjectprojectId);
+
+    public Project findSubProject(int subProjectId) {
+        try {
+            return projectRepository.findSubProject(subProjectId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public Project findSubProject(int subProjectId) throws SQLException {
-        return projectRepository.findSubProject(subProjectId);
+
+    public void editSubProject(Project subProject) {
+        try {
+            projectRepository.editSubProject(subProject);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public void editSubProject(Project subProject) throws SQLException {
-        projectRepository.editSubProject(subProject);
-    }
-    public void deleteSubProject(int subProjectId) throws SQLException {
-        projectRepository.deleteSubProject(subProjectId);
+
+    public void deleteSubProject(int subProjectId) {
+        try {
+            projectRepository.deleteSubProject(subProjectId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
 
 }

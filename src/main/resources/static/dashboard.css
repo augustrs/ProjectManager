@@ -16,30 +16,13 @@
 }
 
 
-.project-container {
-
-    width: 40%;
-
-    display: inline-block;
-    float: left;
-    margin-left: 120px;
-    margin-top: 100px;
-    border-radius: 20px;
-    background-color: rgba(201, 210, 216, 0.7);
-    padding: 15px 15px 20px;
-
-    -webkit-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
-    box-shadow: 0px 3px 16px 0px rgba(0,0,0,0.75);
-
-}
 
 .task-container {
 
     width: 40%;
     display: inline-block;
-    float: right;
-    margin-right: 120px;
+
+
     margin-top: 100px;
     border-radius: 20px;
     background-color: rgba(201, 210, 216, 0.7);

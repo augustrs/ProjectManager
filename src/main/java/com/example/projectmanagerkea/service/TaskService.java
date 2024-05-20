@@ -18,31 +18,75 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public void createTask(Task task, int subprojectId) throws SQLException {
-        taskRepository.createTask(task, subprojectId);
+    public void createTask(Task task, int subprojectId) {
+        try {
+            taskRepository.createTask(task, subprojectId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public Task findTask(int taskId) throws SQLException {
-        return taskRepository.findTask(taskId);
+
+    public Task findTask(int taskId) {
+        try {
+            return taskRepository.findTask(taskId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public List<User> getAssigneesForTask(int taskId) throws SQLException {
-        return taskRepository.getAssigneesForTask(taskId);
+
+    public List<User> getAssigneesForTask(int taskId) {
+        try {
+            return taskRepository.getAssigneesForTask(taskId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public String getStatusForTask(int taskId) throws SQLException {
-        return taskRepository.getStatusForTask(taskId);
+
+    public String getStatusForTask(int taskId) {
+        try {
+            return taskRepository.getStatusForTask(taskId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public void assignUserToTask(int taskId, int userId) throws SQLException {
-        taskRepository.assignUserToTask(taskId, userId);
+
+    public void assignUserToTask(int taskId, int userId) {
+        try {
+            taskRepository.assignUserToTask(taskId, userId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public void unassignUserFromTask(int taskId, int userId) throws SQLException {
-        taskRepository.unassignUserFromTask(taskId, userId);
+
+    public void unassignUserFromTask(int taskId, int userId) {
+        try {
+            taskRepository.unassignUserFromTask(taskId, userId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public List<Task> assignedTasksForUser(int userId) throws SQLException {
-        return taskRepository.assignedTasks(userId);
+
+    public List<Task> assignedTasksForUser(int userId) {
+        try {
+            return taskRepository.assignedTasks(userId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public void updateTask(Task updatedTask, int statusId) throws SQLException {
-        taskRepository.updateTask(updatedTask, statusId);
+
+    public void updateTask(Task updatedTask, int statusId) {
+        try {
+            taskRepository.updateTask(updatedTask, statusId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
-    public void deleteTask(int taskId) throws SQLException {
-        taskRepository.deleteTask(taskId);
+
+    public void deleteTask(int taskId) {
+        try {
+            taskRepository.deleteTask(taskId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
 }
