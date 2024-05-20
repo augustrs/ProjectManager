@@ -9,13 +9,13 @@
 <table border="1">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Assignees</th>
-        <th>Time in hour(s)</th>
-        <th>Price</th>
+        <th>Navn</th>
+        <th>Beskrivelse</th>
+        <th>Tildelte</th>
+        <th>Tid i time(r)</th>
+        <th>Pris</th>
         <th>Status</th>
-        <th>Assign</th>
+        <th>Tildel</th>
     </tr>
     </thead>
     <tbody>
@@ -28,7 +28,7 @@
                     <span  th:text="${assignee.realName}"></span>
                     <form method="post" th:action="@{'/' + ${taskId} + '/unassignUser'}">
                         <input type="hidden" name="userId" th:value="${assignee.userId}">
-                        <button type="submit">Unassign</button>
+                        <button type="submit">Fjern tildeling</button>
                     </form>
                 </li>
             </ul>
@@ -39,10 +39,10 @@
         <td><form method="post" th:action="@{'/' + ${taskId} + '/assignUser'}">
             <label>
                 <select name="userId">
-                    <option th:each="user : ${allEmployees}" th:value="${user.userId}" th:text="${user.realName}">User</option>
+                    <option th:each="user : ${allEmployees}" th:value="${user.userId}" th:text="${user.realName}">Medarbejder</option>
                 </select>
             </label>
-            <button type="submit">Assign</button>
+            <button type="submit">Tildel</button>
         </form></td>
 
         <td>

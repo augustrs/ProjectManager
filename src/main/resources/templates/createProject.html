@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create project form</title>
+    <title>Opret projekt form</title>
 </head>
 <body>
 <form th:action="@{/createProject}" th:object="${project}" method="post">
 
-    <label for="name">Project name:</label>
+    <label for="name">Projekt navn:</label>
     <input type="text" id="name" th:field="*{projectName}" required>
 
-    <label for="description">Description:</label>
+    <label for="description">Beskrivelse:</label>
     <input type="text" id="description" th:field="*{projectDescription}">
 
-    <button type="submit">Submit</button>
+    <button type="submit">Indsend</button>
 </form>
 </body>
 </html>

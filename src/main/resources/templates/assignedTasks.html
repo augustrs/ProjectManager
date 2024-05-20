@@ -5,20 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Assigned tasks</h1>
+<h1>Tildelte opgaver</h1>
 <table border="1">
     <thead>
     <tr>
-        <th>Task name</th>
-        <th>Task description</th>
-        <th>View task</th>
+        <th>Opgave navn</th>
+        <th>Opgave beskrivelse</th>
+        <th>Se opgave</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="task : ${tasks}">
         <td th:text="${task.taskName}"></td>
         <td th:text="${task.taskDescription}"></td>
-        <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">View Task</a></td>
+        <td><a th:href="@{'/' + ${task.taskId} + '/showTask'}">Se opgave</a></td>
 
     </tr>
     </tbody>
