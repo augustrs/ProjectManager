@@ -21,24 +21,23 @@ public class ProjectRepository {
     @Value("${spring.datasource.password}")
     private String db_password;
 
-    public void createProject(Project newProject, int managerId) {
+    public void createProject(Project newProject, int managerId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "INSERT INTO project(name, description, user_id) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
-            ps.setString(1, newProject.getProjectName());
-            ps.setString(2, newProject.getProjectDescription());
-            ps.setInt(3, managerId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error creating project: " + e.getMessage());
-        }
+
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setString(1, newProject.getProjectName());
+        ps.setString(2, newProject.getProjectDescription());
+        ps.setInt(3, managerId);
+        ps.executeUpdate();
     }
 
 
-    public List<Project> getAllProjects() {
+
+    public List<Project> getAllProjects() throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT * FROM project";
-        try (Statement statement = connection.createStatement()) {
+        Statement statement = connection.createStatement();
 
 
             ResultSet rs = statement.executeQuery(SQL);
@@ -51,16 +50,13 @@ public class ProjectRepository {
                 projects.add(project);
             }
             return projects;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting all projects: " + e.getMessage(), e);
-        }
     }
 
 
-    public List<Project> findSubprojectsForProject(int projectId) {
+    public List<Project> findSubprojectsForProject(int projectId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT * FROM subproject WHERE project_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+       PreparedStatement ps = connection.prepareStatement(SQL);
 
 
             ps.setInt(1, projectId);
@@ -74,15 +70,12 @@ public class ProjectRepository {
                 subprojects.add(subproject);
             }
             return subprojects;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting subprojects for project: " + e.getMessage(), e);
-        }
     }
 
-    public List<Task> findTasksForSubProject(int subProjectprojectId) {
+    public List<Task> findTasksForSubProject(int subProjectprojectId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT * FROM task WHERE subproject_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
 
 
             ps.setInt(1, subProjectprojectId);
@@ -100,16 +93,13 @@ public class ProjectRepository {
 
             }
             return tasks;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting tasks for subproject: " + e.getMessage(), e);
-        }
 
     }
 
-    public Project findSubProject(int subProjectId) {
+    public Project findSubProject(int subProjectId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT * FROM subproject WHERE subproject_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, subProjectId);
             ResultSet rs = ps.executeQuery();
             Project subproject = new Project();
@@ -119,68 +109,50 @@ public class ProjectRepository {
                 subproject.setProjectId(rs.getInt("subproject_id"));
             }
             return subproject;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error finding subproject: " + e.getMessage(), e);
-        }
+
     }
 
-    public void editSubProject(Project subProject) {
+    public void editSubProject(Project subProject) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "UPDATE subproject SET name = ?, description = ? WHERE subproject_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setString(1, subProject.getProjectName());
             ps.setString(2, subProject.getProjectDescription());
             ps.setInt(3, subProject.getProjectId());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error editing subproject: " + e.getMessage(), e);
-        }
+
     }
 
-    public void deleteSubProjectTasks(int subProjectId) {
+    public void deleteSubProjectTasks(int subProjectId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "DELETE FROM task WHERE subproject_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, subProjectId);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting subproject tasks: " + e.getMessage(), e);
-        }
+
     }
 
-    public void deleteSubProject(int subProjectId) {
-        try {
+    public void deleteSubProject(int subProjectId) throws SQLException {
             for (Task task : findTasksForSubProject(subProjectId)) {
-                try {
                     deleteFromEmployeeTask(task.getTaskId());
-                } catch (RuntimeException e) {
-                    throw new RuntimeException("Error deleting employee_task: " + e.getMessage(), e);
-                }
             }
             deleteSubProjectTasks(subProjectId);
             Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
             String SQL = "DELETE FROM subproject WHERE subproject_id = ?";
-            try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+            PreparedStatement ps = connection.prepareStatement(SQL);
                 ps.setInt(1, subProjectId);
                 ps.executeUpdate();
-            } catch (SQLException e) {
-                throw new RuntimeException("Error deleting subproject: " + e.getMessage(), e);
-            }
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error deleting subproject: " + e.getMessage(), e);
-        }
+
     }
 
 
-    public void deleteFromEmployeeTask(int taskId) {
+    public void deleteFromEmployeeTask(int taskId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "DELETE FROM employee_task WHERE task_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, taskId);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting employee_task: " + e.getMessage(), e);
-        }
+
     }
 
 

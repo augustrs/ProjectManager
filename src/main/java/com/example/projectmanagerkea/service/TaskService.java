@@ -18,75 +18,42 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public void createTask(Task task, int subprojectId) {
-        try {
+    public void createTask(Task task, int subprojectId) throws SQLException {
+
             taskRepository.createTask(task, subprojectId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
+
     }
 
-    public Task findTask(int taskId) {
-        try {
+    public Task findTask(int taskId) throws SQLException {
             return taskRepository.findTask(taskId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public List<User> getAssigneesForTask(int taskId) {
-        try {
+    public List<User> getAssigneesForTask(int taskId) throws SQLException {
             return taskRepository.getAssigneesForTask(taskId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public String getStatusForTask(int taskId) {
-        try {
+    public String getStatusForTask(int taskId) throws SQLException {
             return taskRepository.getStatusForTask(taskId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public void assignUserToTask(int taskId, int userId) {
-        try {
+    public void assignUserToTask(int taskId, int userId) throws SQLException {
             taskRepository.assignUserToTask(taskId, userId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
+
     }
 
-    public void unassignUserFromTask(int taskId, int userId) {
-        try {
+    public void unassignUserFromTask(int taskId, int userId) throws SQLException {
             taskRepository.unassignUserFromTask(taskId, userId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public List<Task> assignedTasksForUser(int userId) {
-        try {
+    public List<Task> assignedTasksForUser(int userId) throws SQLException {
             return taskRepository.assignedTasks(userId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public void updateTask(Task updatedTask, int statusId) {
-        try {
+    public void updateTask(Task updatedTask, int statusId) throws SQLException {
             taskRepository.updateTask(updatedTask, statusId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public void deleteTask(int taskId) {
-        try {
+    public void deleteTask(int taskId) throws SQLException {
             taskRepository.deleteTask(taskId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 }

@@ -23,10 +23,10 @@ public class TaskRepository {
     private String db_password;
 
 
-    public Task findTask(int taskId) {
+    public Task findTask(int taskId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT * FROM task WHERE task_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, taskId);
             ResultSet rs = ps.executeQuery();
             Task task = new Task();
@@ -39,19 +39,17 @@ public class TaskRepository {
                 task.setTaskStatusId(rs.getInt("status_id"));
             }
             return task;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error finding task: " + e.getMessage());
-        }
+
 
     }
 
-    public List<User> getAssigneesForTask(int taskId) {
+    public List<User> getAssigneesForTask(int taskId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT u.real_name, u.user_id " +
                 "FROM EMPLOYEE_TASK et " +
                 "JOIN USER u ON et.user_id = u.user_id " +
                 "WHERE et.task_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, taskId);
             ResultSet rs = ps.executeQuery();
             List<User> assignees = new ArrayList<>();
@@ -62,16 +60,14 @@ public class TaskRepository {
                 assignees.add(user);
             }
             return assignees;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting assignees for task: " + e.getMessage());
-        }
+
     }
 
 
-    public void createTask(Task newTask, int subprojectId) {
+    public void createTask(Task newTask, int subprojectId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "INSERT INTO task(task_name, task_description, time, price ,status_id, subproject_id) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setString(1, newTask.getTaskName());
             ps.setString(2, newTask.getTaskDescription());
             ps.setInt(3, newTask.getTaskTime());
@@ -79,15 +75,13 @@ public class TaskRepository {
             ps.setInt(5, 1);
             ps.setInt(6, subprojectId);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error creating task: " + e.getMessage());
-        }
+
     }
 
-    public String getStatusForTask(int taskId) {
+    public String getStatusForTask(int taskId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT s.status FROM TASK t JOIN STATUS s ON t.status_id = s.status_id WHERE t.task_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, taskId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -95,42 +89,36 @@ public class TaskRepository {
             }
             return null;
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting status for task: " + e.getMessage());
-        }
+
     }
 
-    public void assignUserToTask(int taskId, int userId) {
+    public void assignUserToTask(int taskId, int userId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "INSERT INTO employee_task(user_id, task_id) VALUES (?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, userId);
             ps.setInt(2, taskId);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error assigning user to task: " + e.getMessage());
-        }
+
     }
 
-    public void unassignUserFromTask(int taskId, int userId) {
+    public void unassignUserFromTask(int taskId, int userId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "DELETE FROM employee_task WHERE user_id = ? AND task_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, userId);
             ps.setInt(2, taskId);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error unassigning user from task: " + e.getMessage());
-        }
+
     }
 
-    public List<Task> assignedTasks(int userId) {
+    public List<Task> assignedTasks(int userId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT t.task_name, t.task_id, t.task_description, t.time, t.price, t.status_id " +
                 "FROM EMPLOYEE_TASK et " +
                 "JOIN TASK t ON et.task_id = t.task_id " +
                 "WHERE et.user_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             List<Task> tasks = new ArrayList<>();
@@ -145,15 +133,13 @@ public class TaskRepository {
                 tasks.add(task);
             }
             return tasks;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting assigned tasks: " + e.getMessage());
-        }
+
     }
 
-    public void updateTask(Task updatedTask, int statusId) {
+    public void updateTask(Task updatedTask, int statusId) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "UPDATE TASK SET task_name = ?, task_description = ?, time = ?, price = ?, status_id = ? WHERE task_id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+       PreparedStatement ps = connection.prepareStatement(SQL);
 
             ps.setString(1, updatedTask.getTaskName());
             ps.setString(2, updatedTask.getTaskDescription());
@@ -163,20 +149,16 @@ public class TaskRepository {
             ps.setInt(6, updatedTask.getTaskId());
 
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error updating task: " + e.getMessage());
-        }
+
     }
 
-    public void deleteTask(int id) {
+    public void deleteTask(int id) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "DELETE FROM TASK WHERE TASK_ID = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+        PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, id);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting task: " + e.getMessage());
-        }
+
     }
 }

@@ -17,44 +17,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User verifyLogIn(String username, String password) {
-        try {
+    public User verifyLogIn(String username, String password) throws SQLException {
             return userRepository.verifyUser(username, password);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public void createUser(User newUser) {
-        try {
+    public void createUser(User newUser) throws SQLException {
             userRepository.createUser(newUser);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
 
-    public List<Project> findManagedProjects(int managerUserId) {
-        try {
+    public List<Project> findManagedProjects(int managerUserId) throws SQLException {
             return userRepository.findManagedProjects(managerUserId);
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public List<User> getAllUsers() {
-        try {
+    public List<User> getAllUsers() throws SQLException {
             return userRepository.getAllUsers();
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 
-    public List<User> getAllEmployees() {
-        try {
+    public List<User> getAllEmployees() throws SQLException {
             return userRepository.getAllEmployees();
-        } catch (RuntimeException e) {
-            throw e;
-        }
     }
 }
