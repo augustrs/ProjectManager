@@ -58,8 +58,9 @@ public class UserController {
                 model.addAttribute("error", "invalid credentials");
                 return "index";
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
         }
     }
 
@@ -106,16 +107,22 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    public String createUser(HttpSession session, @ModelAttribute("user") User newUser) throws SQLException {
+    public String createUser(HttpSession session, @ModelAttribute("user") User newUser, Model model)  {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
             userService.createUser(newUser);
             return "redirect:/allUsers";
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
     @GetMapping("/managedProjects")
-    public String managedProjects(HttpSession session, Model model) throws SQLException {
+    public String managedProjects(HttpSession session, Model model) {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2) {
             int managerUserId = loggedInUser.getUserId();
@@ -124,9 +131,14 @@ public class UserController {
             return "managedProjects";
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
     @GetMapping("/allUsers")
-    public String allUsers(HttpSession session, Model model) throws SQLException {
+    public String allUsers(HttpSession session, Model model) {
+        try {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
             List<User> users = userService.getAllUsers();
@@ -134,5 +146,9 @@ public class UserController {
             return "showUsers";
         }
         return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 }

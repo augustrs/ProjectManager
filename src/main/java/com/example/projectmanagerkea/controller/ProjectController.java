@@ -29,7 +29,6 @@ public class ProjectController {
     }
 
 
-
     @GetMapping("/createProjectForm")
     public String showCreateProjectForm(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -41,92 +40,120 @@ public class ProjectController {
     }
 
     @PostMapping("/createProject")
-    public String createProject(HttpSession session, @ModelAttribute("project") Project newProject) throws SQLException {
+    public String createProject(HttpSession session, @ModelAttribute("project") Project newProject, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
             int managerId = loggedInUser.getUserId();
-            projectService.createProject(newProject, managerId);
-            if (loggedInUser.getRoleId() == 2) {
-                return "redirect:/managerDashboard";
+            try {
+                projectService.createProject(newProject, managerId);
+                if (loggedInUser.getRoleId() == 2) {
+                    return "redirect:/managerDashboard";
+                }
+                return "redirect:/allProjects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
             }
-            return "redirect:/admin";
         }
         return "redirect:/dashboard";
     }
 
 
-
-
-
-
-
     @GetMapping("/allProjects")
-    public String allProjects(HttpSession session, Model model) throws SQLException {
+    public String allProjects(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
-            List<Project> projects = projectService.getAllProjects();
-            model.addAttribute("projects", projects);
-            return "allProjects";
+            try {
+                List<Project> projects = projectService.getAllProjects();
+                model.addAttribute("projects", projects);
+                return "allProjects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
         }
         return "redirect:/dashboard";
     }
 
 
     @GetMapping("/{projectId}/subprojects")
-    public String subprojects(@PathVariable int projectId, HttpSession session, Model model) throws SQLException {
+    public String subprojects(@PathVariable int projectId, HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
-            List<Project> subprojects = projectService.findSubprojectsForProject(projectId);
-            model.addAttribute("subprojects", subprojects);
-            return "subprojects";
+            try {
+                List<Project> subprojects = projectService.findSubprojectsForProject(projectId);
+                model.addAttribute("subprojects", subprojects);
+                return "subprojects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
         }
         return "redirect:/dashboard";
     }
 
     @GetMapping("/{subProjectId}/tasks")
-    public String tasks(@PathVariable int subProjectId, HttpSession session, Model model) throws SQLException {
+    public String tasks(@PathVariable int subProjectId, HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && loggedInUser.getRoleId() == 2 || loggedInUser != null && loggedInUser.getRoleId() == 1) {
-            List<Task> tasks = projectService.findTasksForSubProject(subProjectId);
-            model.addAttribute("tasks", tasks);
-            return "tasks";
+            try {
+                List<Task> tasks = projectService.findTasksForSubProject(subProjectId);
+                model.addAttribute("tasks", tasks);
+                return "tasks";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
         }
         return "redirect:/dashboard";
     }
 
+
     @GetMapping("{subProjectId}/editSubProject")
-    public String editSubProject(@PathVariable int subProjectId, HttpSession session, Model model) throws SQLException {
+    public String editSubProject(@PathVariable int subProjectId, HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
-            Project subProject = projectService.findSubProject(subProjectId);
-            model.addAttribute("subProject", subProject);
-            model.addAttribute("subProjectId", subProjectId);
-            return "editSubProject";
+            try {
+                Project subProject = projectService.findSubProject(subProjectId);
+                model.addAttribute("subProject", subProject);
+                model.addAttribute("subProjectId", subProjectId);
+                return "editSubProject";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
         }
         return "redirect:/dashboard";
     }
 
     @PostMapping("/editSubProject")
-    public String editSubProject(@ModelAttribute("subProject") Project subProject, HttpSession session) throws SQLException {
+    public String editSubProject(@ModelAttribute("subProject") Project subProject, HttpSession session, Model model)  {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
-            projectService.editSubProject(subProject);
-            return "redirect:/allProjects";
+            try { projectService.editSubProject(subProject);
+                return "redirect:/allProjects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
         }
         return "redirect:/dashboard";
     }
 
     @PostMapping("/{subProjectId}/deleteSubProject")
-    public String deleteSubProject(@PathVariable int subProjectId, HttpSession session) throws SQLException {
+    public String deleteSubProject(@PathVariable int subProjectId, HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            try {
             projectService.deleteSubProject(subProjectId);
             return "redirect:/allProjects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
         }
         return "redirect:/dashboard";
     }
-
-
 
 
 }
