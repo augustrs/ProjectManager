@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,8 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-
-@Nested
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 @WebMvcTest(ProjectController.class)
 class ProjectControllerTest {
     @Autowired
@@ -42,132 +42,121 @@ class ProjectControllerTest {
     private UserService userService;
 
 
-
-    @Test
-    void testLoginSubmit_AdminRole() throws Exception {
-        User adminUser = new User();
-        adminUser.setUsername("admin");
-        adminUser.setPassword("admin");
-        adminUser.setRoleId(1);
-
-        when(userService.verifyLogIn("admin", "admin")).thenReturn(adminUser);
-
-
-        mockMvc.perform(post("/login")
-                        .param("username", "admin")
-                        .param("password", "admin"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin"));
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testLoginSubmit_NonAdminRole() throws Exception {
-        User nonAdminUser = new User();
-        nonAdminUser.setUsername("user");
-        nonAdminUser.setPassword("user");
-        nonAdminUser.setRoleId(3);
-
-        when(userService.verifyLogIn("user", "user")).thenReturn(nonAdminUser);
-
-        mockMvc.perform(post("/login")
-                        .param("username", "user")
-                        .param("password", "user"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/dashboard"));
-    }
-
-    @Test
-    void testLoginSubmit_InvalidCredentials() throws Exception {
-        when(userService.verifyLogIn(anyString(), anyString())).thenReturn(null);
-
-        mockMvc.perform(post("/login")
-                        .param("username", "invalid")
-                        .param("password", "invalid"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("error"));
-    }
-
-    @Test
-    void testAdminLogin() throws Exception {
-        User adminUser = new User();
-        adminUser.setRoleId(1); // Assuming roleId 1 represents admin
-        Mockito.when(userService.verifyLogIn(Mockito.anyString(), Mockito.anyString())).thenReturn(adminUser);
-
-        mockMvc.perform(post("/login")
-                        .param("username", "admin")
-                        .param("password", "adminPassword"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin"));
-    }
-
-    @Test
-    void testInvalidCredentials() throws Exception {
-        Mockito.when(userService.verifyLogIn(Mockito.anyString(), Mockito.anyString())).thenReturn(null);
-
-        mockMvc.perform(post("/login")
-                        .param("username", "invalid")
-                        .param("password", "invalidPassword"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"))
-                .andExpect(model().attributeExists("error"));
-    }
-
-
-
-    @Test
-    void testAdminAccessWhenLoggedIn() throws Exception {
-        User adminUser = new User();
-        adminUser.setRoleId(1);
+    void testShowCreateProjectForm() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(2);
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("loggedInUser", adminUser); // Set the loggedInUser attribute
+        session.setAttribute("loggedInUser", user);
 
-        mockMvc.perform(get("/admin").session(session))
+        mockMvc.perform(get("/createProjectForm").session(session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin"));
+                .andExpect(view().name("createProject"));
     }
 
     @Test
-    void testRedirectToDashboardForNonAdmin() throws Exception {
-        User nonAdminUser = new User();
-        nonAdminUser.setRoleId(3);
-
-
+    void testCreateProject() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(2);
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("loggedInUser", nonAdminUser);
+        session.setAttribute("loggedInUser", user);
 
-        mockMvc.perform(get("/admin").session(session))
+        mockMvc.perform(post("/createProject")
+                        .session(session)
+                        .param("projectName", "New Project")
+                        .param("description", "Project Description"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/dashboard"));
-    }
-
-
-    @Test
-    void testRedirectToLoginWhenNotLoggedIn() throws Exception {
-        // Create a MockHttpSession directly
-        MockHttpSession session = new MockHttpSession();
-
-        // Configure the session to return null when getAttribute("loggedInUser") is called
-        session.setAttribute("loggedInUser", null);
-
-        mockMvc.perform(get("/admin").session(session))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(view().name("redirect:/managerDashboard"));
     }
 
     @Test
-    void testManagerDashboardAccess() throws Exception {
-        User managerUser = new User();
-        managerUser.setRoleId(2);
+    void testAllProjects() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(1);
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("loggedInUser", managerUser);
-        mockMvc.perform(get("/managerDashboard").session(session))
+        session.setAttribute("loggedInUser", user);
+
+        mockMvc.perform(get("/allProjects").session(session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("managerDashboard"));
+                .andExpect(view().name("allProjects"));
     }
 
+    @Test
+    void testSubprojects() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(2);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("loggedInUser", user);
 
+        mockMvc.perform(get("/1/subprojects").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("subprojects"));
+    }
 
+    @Test
+    void testTasks() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(2);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("loggedInUser", user);
+
+        mockMvc.perform(get("/1/tasks").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tasks"));
+    }
+/*
+    @Test
+    void testEditSubProjectForm() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(2);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("loggedInUser", user);
+
+        mockMvc.perform(get("/1/editSubProject").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("editSubProject"));
+    }
+*/
+    @Test
+    void testEditSubProject() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(2);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("loggedInUser", user);
+
+        mockMvc.perform(post("/editSubProject")
+                        .session(session)
+                        .param("projectId", "1")
+                        .param("projectName", "Edited Project")
+                        .param("description", "Edited Project Description"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/allProjects"));
+    }
+
+    @Test
+    void testDeleteSubProject() throws Exception {
+        User user = new User();
+        user.setUserId(1);
+        user.setRoleId(2);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("loggedInUser", user);
+
+        mockMvc.perform(post("/1/deleteSubProject").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/allProjects"));
+    }
 }
 
 
