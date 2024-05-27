@@ -5,7 +5,6 @@ package com.example.projectmanagerkea.RepositoryTest;
 import com.example.projectmanagerkea.model.Task;
 import com.example.projectmanagerkea.model.User;
 import com.example.projectmanagerkea.repository.TaskRepository;
-import com.example.projectmanagerkea.repository.UserRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -20,8 +19,6 @@ import java.util.List;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-
-
 class TaskRepositoryTest {
     @Autowired
     private TaskRepository taskRepository;

@@ -73,8 +73,8 @@ class ProjectRepositoryTest {
 @Order(7)
     @Test
     void deleteSubProject() throws SQLException {
-        projectRepository.deleteSubProject(1);
-        List<Project> subprojects = projectRepository.findSubprojectsForProject(1);
-        assertEquals(1, subprojects.size());
+        projectRepository.deleteSubProject(4);
+        List<Project> subprojects = projectRepository.findSubprojectsForProject(3);
+        assertEquals(0, subprojects.size());
     }
 }
