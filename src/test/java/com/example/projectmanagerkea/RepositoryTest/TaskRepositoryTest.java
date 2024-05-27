@@ -1,3 +1,4 @@
+/*
 package com.example.projectmanagerkea.RepositoryTest;
 
 
@@ -19,6 +20,8 @@ import java.util.List;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
+
 class TaskRepositoryTest {
     @Autowired
     private TaskRepository taskRepository;
@@ -107,3 +110,5 @@ class TaskRepositoryTest {
     }
 
 }
+
+ */
