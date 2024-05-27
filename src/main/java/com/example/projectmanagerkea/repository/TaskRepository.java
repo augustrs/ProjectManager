@@ -47,7 +47,7 @@ public class TaskRepository {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
         String SQL = "SELECT u.real_name, u.user_id " +
                 "FROM EMPLOYEE_TASK et " +
-                "JOIN USER u ON et.user_id = u.user_id " +
+                "JOIN USERS u ON et.user_id = u.user_id " +
                 "WHERE et.task_id = ?";
         PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, taskId);
@@ -154,7 +154,18 @@ public class TaskRepository {
 
     public void deleteTask(int id) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        deleteFromEmployeeTask(id);
         String SQL = "DELETE FROM TASK WHERE TASK_ID = ?";
+
+        PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+
+    }
+    public void deleteFromEmployeeTask(int id) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+
+        String SQL = "DELETE FROM EMPLOYEE_TASK WHERE TASK_ID = ?";
 
         PreparedStatement ps = connection.prepareStatement(SQL);
             ps.setInt(1, id);

@@ -20,10 +20,33 @@ public class UserRepository {
     @Value("${spring.datasource.password}")
     private String db_password;
 
+
+
+
+
+    public User findUserFromId(int id) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM USERS WHERE user_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        User user = null;
+
+        if (rs.next()) {
+            user = new User();
+            user.setUserId(rs.getInt("user_id"));
+            user.setRealName(rs.getString("real_name"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setRoleId(rs.getInt("role_id"));
+        }
+        return user;
+
+    }
     public User findUser(String username) throws SQLException {
 
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "SELECT * FROM USER WHERE username = ?";
+        String SQL = "SELECT * FROM USERS WHERE username = ?";
         PreparedStatement ps = connection.prepareStatement(SQL);
         ps.setString(1, username);
         ResultSet rs = ps.executeQuery();
@@ -53,7 +76,7 @@ public class UserRepository {
 
     public void createUser(User newUser) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "INSERT INTO USER(real_name, username, password, role_id) VALUES (?, ?, ?, ?)";
+        String SQL = "INSERT INTO USERS(real_name, username, password, role_id) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 
 
@@ -86,7 +109,7 @@ public class UserRepository {
 
     public List<User> getAllUsers() throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "SELECT * FROM USER";
+        String SQL = "SELECT * FROM USERS";
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(SQL);
         List<User> users = new ArrayList<>();
@@ -104,7 +127,7 @@ public class UserRepository {
 
     public List<User> getAllEmployees() throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
-        String SQL = "SELECT * FROM USER WHERE role_id = 3";
+        String SQL = "SELECT * FROM USERS WHERE role_id = 3";
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(SQL);
         List<User> users = new ArrayList<>();
