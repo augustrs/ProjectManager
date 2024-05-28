@@ -11,6 +11,8 @@ ProjektManager er en webapplikation der er designet til at hjælpe med at admins
 * Opdater status på opgaver
 * Slette opgaver
 * Tilføje/fjerne medarbejder til opgaver
+* Se tildelte opgaver
+
 
 ProjectManager giver brugerne lov til at oprette, redigere og slette projekter og opgaver samt uddele opgaver til medarbejder.
 
