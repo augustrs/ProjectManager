@@ -42,7 +42,6 @@ Trin til at køre programmet
 5. Kør programmet - husk at angive port hvis du har andre programmer kørende lokalt på dette tidspunkt (Tomcat bruger automatisk server-port: 8080).
 6. Åbn din webbrowser og naviger dig til den angivne port programmet køre på.
 7. Nyd dit nye projektstyringsværktøj.
-8. Hvis du ønsker at bidrage til dette projekt, bedes du følge disse trin:
 
 ## Bidrag 
 hvis du ønsker at hjælpe med at udvikle ProjectManager se [CONTRIBUTE.MD].
