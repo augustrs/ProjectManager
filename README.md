@@ -47,4 +47,4 @@ Trin til at køre programmet
 7. Nyd dit nye projektstyringsværktøj.
 
 ## Bidrag 
-hvis du ønsker at hjælpe med at udvikle ProjectManager se [CONTRIBUTE.MD].
+hvis du ønsker at hjælpe med at udvikle ProjectManager se [CONTRIBUTE.MD](https://github.com/augustrs/ProjectManager/commit/9d1a95cb71105803dc4af4643699faf8b39a4d2b).
