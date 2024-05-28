@@ -29,12 +29,19 @@ ProjectManager giver brugerne lov til at oprette, redigere og slette projekter o
 Denne sektion vil give dig instruktioner til at installere ProjektManager. 
 
 Liste af teknologier der er nødvendige for projektet kan køre:
+
 Java 17
+
 MySQL Community Server 8.4.0
+
 Maven 4.0.0
+
 Spring 6.0.11
+
 Spring Boot 3.2.5
+
 Thymeleaf 3.2.5
+
 
 Trin til at køre programmet
 1. Git klon https://github.com/augustrs/ProjectManager.
