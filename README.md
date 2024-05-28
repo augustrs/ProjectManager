@@ -1,8 +1,8 @@
-##ProjektManager
+## ProjektManager
 
 ProjektManager er en webapplikation der er designet til at hjælpe med at adminstrere projekter opgaver og subprojekter. 
 
-##Funktioner
+## Funktioner
 * Log in
 * Opret bruger
 * Opret et projekt
@@ -14,7 +14,7 @@ ProjektManager er en webapplikation der er designet til at hjælpe med at admins
 
 ProjectManager giver brugeren lov til at oprette, redigere og slette projekter og opgaver samt uddele opgaver til medarbejder.
 
-##Anvendte teknologier
+## Anvendte teknologier
 * Java: Primært programmeringssprog.
 * Spring Boot: Rammeværk til opbygning af applikationen.
 * Thymeleaf: Skabelonmotor til rendering af views.
@@ -22,7 +22,7 @@ ProjectManager giver brugeren lov til at oprette, redigere og slette projekter o
 * Maven: Bygningsautomatiseringsværktøj.
 * MySQL: Databasehåndteringssystem
 
-##Opsætning og installation
+## Opsætning og installation
 
 Denne sektion vil give dig instruktioner til at installere projecter. 
 
@@ -44,5 +44,5 @@ Trin til at køre programmet
 7. Nyd dit nye projektstyringsværktøj.
 8. Hvis du ønsker at bidrage til dette projekt, bedes du følge disse trin:
 
-##Bidrag 
+## Bidrag 
 hvis du ønsker at hjælpe med at udvikle ProjectManager se [CONTRIBUTE.MD].
