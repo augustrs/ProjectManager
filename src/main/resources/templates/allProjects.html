@@ -17,7 +17,7 @@
     <tr th:each="project : ${projects}">
         <td th:text="${project.projectName}"></td>
         <td th:text="${project.projectDescription}"></td>
-        <td><a th:href="@{'/' + ${project.projectId} + '/subprojects'}">Se Subprojects</a></td>
+        <td><a th:href="@{'/' + ${project.projectId} + '/subprojects'}">Se subprojekt</a></td>
     </tr>
     </tbody>
 </table>
