@@ -50,4 +50,13 @@ public class ProjectService {
     public void createSubProject(Project newSubProject, int projectId) throws SQLException {
         projectRepository.createSubProject(newSubProject, projectId);
     }
+    public void deleteProject(int projectId) throws SQLException {
+        projectRepository.deleteProject(projectId);
+    }
+    public void editProject(Project project) throws SQLException {
+        projectRepository.editProject(project);
+    }
+    public Project findProject(int projectId) throws SQLException {
+        return projectRepository.findProject(projectId);
+    }
 }

@@ -111,6 +111,21 @@ public class ProjectRepository {
             return subproject;
 
     }
+    public Project findProject(int projectId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "SELECT * FROM project WHERE project_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setInt(1, projectId);
+            ResultSet rs = ps.executeQuery();
+            Project project = new Project();
+            while (rs.next()) {
+                project.setProjectName(rs.getString("name"));
+                project.setProjectDescription(rs.getString("description"));
+                project.setProjectId(rs.getInt("project_id"));
+            }
+            return project;
+
+    }
 
     public void editSubProject(Project subProject) throws SQLException {
         Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
@@ -163,6 +178,27 @@ public class ProjectRepository {
             ps.setString(1, newSubProject.getProjectName());
             ps.setString(2, newSubProject.getProjectDescription());
             ps.setInt(3, projectId);
+            ps.executeUpdate();
+
+    }
+    public void deleteProject(int projectId) throws SQLException {
+        for (Project subproject : findSubprojectsForProject(projectId)) {
+            deleteSubProject(subproject.getProjectId());
+        }
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "DELETE FROM project WHERE project_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setInt(1, projectId);
+            ps.executeUpdate();
+
+    }
+    public void editProject(Project project) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "UPDATE project SET name = ?, description = ? WHERE project_id = ?";
+        PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setString(1, project.getProjectName());
+            ps.setString(2, project.getProjectDescription());
+            ps.setInt(3, project.getProjectId());
             ps.executeUpdate();
 
     }

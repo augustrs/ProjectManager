@@ -180,5 +180,50 @@ public class ProjectController {
         return "redirect:/dashboard";
     }
 
+    @PostMapping("/{projectId}/deleteProject")
+    public String deleteProject(@PathVariable int projectId, HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            try {
+                projectService.deleteProject(projectId);
+                return "redirect:/allProjects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
+        }
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/{projectId}/editProject")
+    public String editProject(@PathVariable int projectId, HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            try {
+                Project project = projectService.findProject(projectId);
+                model.addAttribute("project", project);
+                model.addAttribute("projectId", projectId);
+                return "editProject";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
+        }
+        return "redirect:/dashboard";
+    }
+    @PostMapping("/editProject")
+    public String editProject(@ModelAttribute("project") Project project, HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            try {
+                projectService.editProject(project);
+                return "redirect:/allProjects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
+        }
+        return "redirect:/dashboard";
+    }
 
 }
