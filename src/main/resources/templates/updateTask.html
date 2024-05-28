@@ -9,7 +9,7 @@
     <h2>Opdater opgave:</h2>
     <form th:action="@{'/' + ${taskId} + '/updateTask'}" th:object="${task}" method="post">
 
-        <label for="taskName">Opgavenavn:</label>'
+        <label for="taskName">Opgavenavn:</label>
         <input type="text" id="taskName" name="taskName" th:value="${task.taskName}">
         <br>
 
@@ -17,23 +17,23 @@
         <input type="text" id="taskDescription" name="taskDescription" th:value="${task.taskDescription}">
         <br>
 
-        <label for="taskTime">Task time:</label>
+        <label for="taskTime">Tid i time(r):</label>
         <input type="number" id="taskTime" name="taskTime" th:value="${task.taskTime}">
         <br>
 
-        <label for="taskPrice">Task price:</label>
+        <label for="taskPrice">Pris:</label>
         <input type="number" id="taskPrice" name="taskPrice" th:value="${task.taskPrice}">
         <br>
 
-        <label for="taskStatus">Task Status:</label>
+        <label for="taskStatus">Opgave status:</label>
         <select id="taskStatus" name="taskStatus" th:value="${task.taskStatusId}">
             <option value="1" th:selected="${task.taskStatusId == 'Pending'}">Pending</option>
-            <option value="2" th:selected="${task.taskStatusId == 'In Progress'}">In Progress</option>
+            <option value="2" th:selected="${task.taskStatusId == 'In Progress'}">In progress</option>
             <option value="3" th:selected="${task.taskStatusId == 'Completed'}">Completed</option>
         </select>
         <br>
 
-        <button type="submit">Update Task</button>
+        <button type="submit">Opdater opgave</button>
 
     </form>
 
