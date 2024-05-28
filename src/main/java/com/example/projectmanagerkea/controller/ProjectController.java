@@ -155,5 +155,30 @@ public class ProjectController {
         return "redirect:/dashboard";
     }
 
+    @GetMapping("/{projectId}/createSubProjectForm")
+    public String createSubProject(@PathVariable int projectId, HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            model.addAttribute("subProject", new Project());
+            model.addAttribute("projectId", projectId);
+            return "createSubproject";
+        }
+        return "redirect:/dashboard";
+    }
+    @PostMapping("/{projectId}/createSubproject")
+    public String createSubProject(@ModelAttribute("subProject") Project newSubProject, @PathVariable int projectId, HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null && (loggedInUser.getRoleId() == 2 || loggedInUser.getRoleId() == 1)) {
+            try {
+                projectService.createSubProject(newSubProject, projectId);
+                return "redirect:/{projectId}/subprojects";
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+                return "error";
+            }
+        }
+        return "redirect:/dashboard";
+    }
+
 
 }

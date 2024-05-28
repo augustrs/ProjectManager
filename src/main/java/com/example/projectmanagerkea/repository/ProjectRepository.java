@@ -156,4 +156,14 @@ public class ProjectRepository {
     }
 
 
+    public void createSubProject(Project newSubProject, int projectId) throws SQLException {
+        Connection connection = ConnectionManager.getConnection(db_url, db_username, db_password);
+        String SQL = "INSERT INTO subproject(name, description, project_id) VALUES (?, ?, ?)";
+            PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.setString(1, newSubProject.getProjectName());
+            ps.setString(2, newSubProject.getProjectDescription());
+            ps.setInt(3, projectId);
+            ps.executeUpdate();
+
+    }
 }

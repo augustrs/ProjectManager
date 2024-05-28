@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Opret subprojekt form</title>
+</head>
+<body>
+<form th:action="@{'/' + ${projectId} + '/createSubproject'}" th:object="${subProject}" method="post">
+    <label for="name">Subprojekt navn:</label>
+    <input type="text" id="name" th:field="*{projectName}" required>
+
+    <label for="description">Beskrivelse:</label>
+    <input type="text" id="description" th:field="*{projectDescription}">
+
+    <button type="submit">Indsend</button>
+</form>
+</body>
+</html>

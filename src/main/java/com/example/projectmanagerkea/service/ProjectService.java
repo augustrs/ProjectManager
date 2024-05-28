@@ -47,4 +47,7 @@ public class ProjectService {
         projectRepository.deleteSubProject(subProjectId);
     }
 
+    public void createSubProject(Project newSubProject, int projectId) throws SQLException {
+        projectRepository.createSubProject(newSubProject, projectId);
+    }
 }
