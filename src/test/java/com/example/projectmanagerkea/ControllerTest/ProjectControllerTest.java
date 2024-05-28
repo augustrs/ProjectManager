@@ -1,5 +1,6 @@
 package com.example.projectmanagerkea.ControllerTest;
 import com.example.projectmanagerkea.controller.ProjectController;
+import com.example.projectmanagerkea.model.Project;
 import com.example.projectmanagerkea.model.User;
 import com.example.projectmanagerkea.service.ProjectService;
 import com.example.projectmanagerkea.service.UserService;
@@ -42,10 +43,6 @@ class ProjectControllerTest {
     private UserService userService;
 
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void testShowCreateProjectForm() throws Exception {
@@ -114,7 +111,7 @@ class ProjectControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("tasks"));
     }
-/*
+
     @Test
     void testEditSubProjectForm() throws Exception {
         User user = new User();
@@ -123,11 +120,19 @@ class ProjectControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("loggedInUser", user);
 
+        Project subProject = new Project();
+        subProject.setProjectId(1);
+        subProject.setProjectName("Test subProject");
+
+        when(projectService.findSubProject(1)).thenReturn(subProject);
+
         mockMvc.perform(get("/1/editSubProject").session(session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("editSubProject"));
+                .andExpect(view().name("editSubProject"))
+                .andExpect(model().attributeExists("subProject"))
+                .andExpect(model().attribute("subProject", subProject));
     }
-*/
+
     @Test
     void testEditSubProject() throws Exception {
         User user = new User();
@@ -135,6 +140,7 @@ class ProjectControllerTest {
         user.setRoleId(2);
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("loggedInUser", user);
+
 
         mockMvc.perform(post("/editSubProject")
                         .session(session)
