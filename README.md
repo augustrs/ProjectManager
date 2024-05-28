@@ -1,6 +1,6 @@
 ## ProjektManager
 
-ProjektManager er en webapplikation der er designet til at hjælpe med at adminstrere projekter opgaver og subprojekter. 
+ProjektManager er en webapplikation der er designet til at hjælpe med at adminstrere projekter, opgaver og subprojekter. 
 
 ## Funktioner
 * Log in
@@ -12,7 +12,7 @@ ProjektManager er en webapplikation der er designet til at hjælpe med at admins
 * Slette opgaver
 * Tilføje/fjerne medarbejder til opgaver
 
-ProjectManager giver brugeren lov til at oprette, redigere og slette projekter og opgaver samt uddele opgaver til medarbejder.
+ProjectManager giver brugerne lov til at oprette, redigere og slette projekter og opgaver samt uddele opgaver til medarbejder.
 
 ## Anvendte teknologier
 * Java: Primært programmeringssprog.
@@ -24,7 +24,7 @@ ProjectManager giver brugeren lov til at oprette, redigere og slette projekter o
 
 ## Opsætning og installation
 
-Denne sektion vil give dig instruktioner til at installere projecter. 
+Denne sektion vil give dig instruktioner til at installere ProjektManager. 
 
 Liste af teknologier der er nødvendige for projektet kan køre:
 Java 17
