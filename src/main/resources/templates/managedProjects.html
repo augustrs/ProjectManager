@@ -18,8 +18,17 @@
         <td th:text="${project.projectName}"></td>
         <td th:text="${project.projectDescription}"></td>
         <td><a th:href="@{'/' + ${project.projectId} + '/subprojects'}">Se subprojekt</a></td>
+        <td><a th:href="@{'/' + ${project.projectId} + '/editProject'}">Opdater</a></td>
+        <td>
+            <form th:action ="@{'/' + ${project.projectId} + '/deleteProject'}" method ="post"onsubmit="return confirmDeletion()" style="display:inline;">
+                <button type="submit">Slet projekt</button>
+
+            </form>
+
+        </td>
     </tr>
     </tbody>
 </table>
+<a href="/createProjectForm">Opret et nyt projekt</a>
 </body>
 </html>

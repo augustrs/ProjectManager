@@ -62,7 +62,7 @@ public class ProjectController {
     @GetMapping("/allProjects")
     public String allProjects(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null && loggedInUser.getRoleId() == 1) {
+        if (loggedInUser != null && loggedInUser.getRoleId() == 1 || loggedInUser != null && loggedInUser.getRoleId() == 2) {
             try {
                 List<Project> projects = projectService.getAllProjects();
                 model.addAttribute("projects", projects);
